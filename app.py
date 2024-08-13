@@ -1,5 +1,6 @@
 import homePage
 import exploratoryDataAnalysis
+import team_vs_team
 import streamlit as st
 
 st.set_page_config(
@@ -21,7 +22,7 @@ st.markdown(
 PAGES = {
     "EDA": exploratoryDataAnalysis,
     "HOME": homePage,
-    # "Team vs Team": team_vs_team,
+    "Team vs Team": team_vs_team,
     # "Player Analysis": player,
     # "Team Analysis": team,
     # "Batsman vs Bowler": bat_vs_bowl,
