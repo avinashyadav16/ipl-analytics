@@ -20,8 +20,8 @@ st.markdown(
 )
 
 PAGES = {
-    "EDA": exploratoryDataAnalysis,
     "HOME": homePage,
+    "EDA": exploratoryDataAnalysis,
     "Team vs Team": team_vs_team,
     # "Player Analysis": player,
     # "Team Analysis": team,

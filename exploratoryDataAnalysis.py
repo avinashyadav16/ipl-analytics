@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 
+
+
 def latest_teams(df, cols):
 
     temp = df.copy()
@@ -52,10 +54,18 @@ def latest_teams(df, cols):
     return temp
 
 
+
+
+
+
+
+
+
 def app():
-    st.markdown(''' 
+    st.markdown('''
     <h1 style='text-align:center;'> 🌟EXPLORATORY DATA ANALYSIS🌟</h1>
     ''', unsafe_allow_html=True)
+    
 
     #################################################################
     ################## MATCHES DATASET LOADING ######################
@@ -69,10 +79,16 @@ def app():
         if st.checkbox(label="View Code", key=0):
             st.code('''
                         matches_df = pd.read_csv('matches_2008-2024.csv')
-                        matches_df.columns = matches_df.columns.str.strip()
                         
+                        matches_df.columns = matches_df.columns.str.strip()
+
                         st.write(matches_df.head(5))
                     ''', language='python')
+
+
+
+
+
 
     #################################################################
     ################## DELEVERY DATASET LOADING #####################
@@ -85,69 +101,92 @@ def app():
 
         if st.checkbox(label="View Code", key=1):
             st.code('''
-                        matches_df = pd.read_csv('matches_2008-2024.csv')
+                        deliveries_df = pd.read_csv('deliveries_2008-2024.csv')
+                        
                         deliveries_df.columns = deliveries_df.columns.str.strip()
                         
-                        st.write(matches_df.head(5))
+                        st.write(deliveries_df.head(5))
                     ''', language='python')
 
-    matches_team = latest_teams(
+    new_matchesDF = latest_teams(
         matches_df, ['team1', 'team2', 'toss_winner', 'winner'])
+
+
+
+
+
 
     #################################################################
     ################## MATCHES PER SEASON ###########################
     #################################################################
     with st.expander("👉 Matches Per Season"):
-        season_counts = matches_df['season'].value_counts().sort_index()
+        matches_per_season = new_matchesDF['season'].value_counts(
+        ).sort_index()
 
-        trace = go.Bar(x=season_counts.index,
-                       y=season_counts.values,
-                       marker={'color': '#636efa'})
+        colors = px.colors.qualitative.Safe
+        color_list = [colors[i % len(colors)]
+                      for i in range(len(matches_per_season))]
 
-        layout = go.Layout(title="Matches Per Season",
-                           xaxis={'title': 'Season'},
-                           yaxis={'title': 'Number of Matches Played'})
+        trace = go.Bar(
+            x=matches_per_season.index,
+            y=matches_per_season.values,
+            marker={'color': color_list}
+        )
 
-        fig = go.Figure(data=[trace],
-                        layout=layout)
+        layout = go.Layout(
+            title="Matches Per Season",
+            xaxis={'title': 'Season'},
+            yaxis={'title': 'Number of Matches Played'}
+        )
 
-        st.plotly_chart(fig,
-                        transparent=True,
-                        use_container_width=True)
+        fig = go.Figure(data=[trace], layout=layout)
+
+        st.plotly_chart(fig, transparent=True, use_container_width=True)
 
         if st.checkbox(label="View Code", key=2):
             st.code('''
-                        season_counts = matches_df['season'].value_counts().sort_index()
+                        matches_per_season = new_matchesDF['season'].value_counts().sort_index()
+
+                        colors = px.colors.qualitative.Safe
                         
-                        trace = go.Bar(x=season_counts.index,
-                                       y=season_counts.values,
-                                       marker={'color': '#636efa'})
+                        color_list = [colors[i % len(colors)]
+                                      for i in range(len(matches_per_season))]
                         
-                        layout = go.Layout(title="Matches Per Season",
-                                        xaxis={'title': 'Season'},
-                                        yaxis={'title': 'Number of Matches Played'})
-                        
-                        fig = go.Figure(data=[trace], 
-                                        layout=layout)
-                        
-                        st.plotly_chart(fig, 
-                                        transparent=True, 
-                                        use_container_width=True)
+                        trace = go.Bar(x = matches_per_season.index,
+                                       y = matches_per_season.values,
+                                        marker={'color': color_list})
+
+                        layout = go.Layout(title = "Matches Per Season",
+                                           xaxis = {'title': 'Season'},
+                                           yaxis = {'title': 'Number of Matches Played'})
+
+                        fig = go.Figure(data = [trace], layout = layout)
+
+                        st.plotly_chart(fig,
+                                        transparent = True,
+                                        use_container_width = True)
                     ''', language='python')
+
+
+
+
+
 
     ####################################################################
     ########## Most Man of The Match Award Received By Players #########
     ###################################################################
     with st.expander("👉 Most POTM Awards"):
-        top_20 = matches_df['player_of_match'].value_counts(
+        top_20_POTM = new_matchesDF['player_of_match'].value_counts(
         ).iloc[:20].sort_values()
 
-        fig = px.bar(y=top_20.index,
-                     x=top_20.values,
+        fig = px.bar(y=top_20_POTM.index,
+                     x=top_20_POTM.values,
                      labels={
                          'y': 'Player',
                          'x': 'POTM Awards'
-                     })
+                     },
+                     color=top_20_POTM.index,
+                     color_discrete_sequence=px.colors.qualitative.Safe)
 
         st.plotly_chart(fig,
                         transparent=True,
@@ -155,156 +194,245 @@ def app():
 
         if st.checkbox(label="View Code", key=3):
             st.code('''
-                        top_20 = matches_df['player_of_match'].value_counts().iloc[:20].sort_values()
-                        fig = px.bar(y=top_20.index,x=top_20.values,
-                        labels={
-                            'y':'Player',
-                            'x':'POTM Awards'
-                        })
+                        top_20_POTM = new_matchesDF['player_of_match'].value_counts().iloc[:20].sort_values()
+                        
+                        fig = px.bar(y = top_20_POTM.index,x=top_20_POTM.values,
+                                     labels = {
+                                         'y':'Player',
+                                         'x':'POTM Awards'
+                                     },
+                                     color=top_20_POTM.index,
+                                     color_discrete_sequence=px.colors.qualitative.Safe)
+                        
+                        st.plotly_chart(fig,
+                                        transparent = True,
+                                        use_container_width = True)
+                    ''', language='python')
+
+
+
+
+
+
+
+
+    ##########################################################################
+    ################ Venues With Most Matches ################################
+    ##########################################################################
+    with st.expander("👉 Top 20 Venues With Most Matches"):
+        top_20_venue = new_matchesDF['venue'].value_counts().iloc[:20]
+
+        fig = px.bar(x=top_20_venue.index,
+                     y=top_20_venue.values,
+                     labels={
+                         'x': 'Venue',
+                         'y': 'Total Matches Played'
+                     },
+                     color=top_20_venue.index,
+                     color_discrete_sequence=px.colors.qualitative.Safe)
+
+        st.plotly_chart(fig,
+                        transparent=True,
+                        use_container_width=True)
+
+        if st.checkbox(label="View Code", key=4):
+            st.code('''
+                        top_20_venue = new_matchesDF['venue'].value_counts().iloc[:20]
+
+                        fig = px.bar(x=top_20_venue.index,
+                                     y=top_20_venue.values,
+                                     labels={
+                                         'x':'Venue',
+                                         'y':'Total Matches Played'
+                                     },
+                                     color=top_20_venue.index,
+                                     color_discrete_sequence=px.colors.qualitative.Safe)
+
                         st.plotly_chart(fig,
                                         transparent=True,
                                         use_container_width=True)
                     ''', language='python')
 
 
-##########################################################################
-################ Venues With Most Matches ################################
-##########################################################################
-    with st.expander("👉 Top 20 Venues With Most Matches"):
-
-        top_20 = matches_df['venue'].value_counts().iloc[:20]
-
-        fig = px.bar(x=top_20.index,
-                     y=top_20.values,
-                     labels={
-                         'x': 'Venue',
-                         'y': 'Matches Count'
-                     })
-
-        st.plotly_chart(fig, transparent=True, use_container_width=True)
-
-        if st.checkbox(label="View Code", key=4):
-            st.code(''' 
-                        top_20 = matches_df['venue'].value_counts().iloc[:20]
-                        
-                        fig = px.bar(x=top_20.index,
-                                     y=top_20.values,
-                                     labels={
-                                         'x':'Venue',
-                                         'y':'Matches Count'
-                                     })
-                        
-                        st.plotly_chart(fig, 
-                                        transparent=True,
-                                        use_container_width=True)
-                    ''', language='python')
 
 
-##########################################################################
-########### Team With Most Toss Wins ################
-###########################################################################
 
+
+
+
+    ###########################################################################
+    ###################### Team With Most Toss Wins ###########################
+    ###########################################################################
     with st.expander('👉 Team With Most Match Wins'):
-        top_20 = matches_df['winner'].value_counts().iloc[:20].sort_values()
+        teams_total_toss_win = new_matchesDF['winner'].value_counts(
+        ).iloc[:].sort_values()
 
-        fig = px.bar(y=top_20.index, x=top_20.values,
-                     labels={
-                         'y': 'Count',
-                         'x': 'Team'
-                     })
+        fig = px.bar(
+            y=teams_total_toss_win.index,
+            x=teams_total_toss_win.values,
+            labels={
+                'y': 'Total Wins',
+                'x': 'Team'
+            },
+            color=teams_total_toss_win.index,
+            color_discrete_sequence=px.colors.qualitative.Safe
+        )
 
         st.plotly_chart(fig,
                         transparent=True,
                         use_container_width=True)
 
         if st.checkbox(label="View Code", key=5):
-            st.code(''' 
-                        top_20 = matches_df['winner'].value_counts().iloc[:20].sort_values()
-                        fig = px.bar(y=top_20.index,x=top_20.values,
-                        labels={
-                            'y':'Team',
-                            'x':'Count'
-                        })
+            st.code('''
+                        teams_total_toss_win = new_matchesDF['winner'].value_counts().iloc[:20].sort_values()
+                        
+                        fig = px.bar(y=teams_total_toss_win.index,
+                                     x=teams_total_toss_win.values,
+                                     labels={
+                                         'y':'Team',
+                                         'x':'Total Wins'
+                                     },
+                                     color=teams_total_toss_win.index,
+                                     color_discrete_sequence=px.colors.qualitative.Safe
+                        
                         st.plotly_chart(fig,
                                         transparent=True,
                                         use_container_width=True)
             ''', language='python')
 
-##################################################################
-#################### Team With Most Toss Wins ####################
-#################################################################
-    with st.expander('👉 Team With Most Toss Wins'):
-        temp = matches_team['toss_winner'].value_counts()
 
-        fig = px.bar(x=temp.index,
-                     y=temp.values,
-                     title='Toss Winners')
+
+
+
+
+
+
+    ##################################################################
+    #################### Team With Most Toss Wins ####################
+    ##################################################################
+    with st.expander('👉 Team With Most Toss Wins'):
+        teams_toss_win_count = new_matchesDF['toss_winner'].value_counts()
+
+        fig = px.bar(x=teams_toss_win_count.index,
+                     y=teams_toss_win_count.values,
+                     title='Toss Winners',
+                     color=teams_toss_win_count.index,
+                     color_discrete_sequence=px.colors.qualitative.Safe)
 
         st.plotly_chart(fig,
                         transparent=True,
                         use_container_width=True)
 
         if st.checkbox(label="View Code", key=6):
-            st.code(''' 
-                temp = matches_team['toss_winner'].value_counts()
-                fig = px.bar(x=temp.index,
-                            y=temp.values,
-                            title='Toss Winners')
+            st.code('''
+                teams_toss_win_count = matches_team['toss_winner'].value_counts()
                 
+                fig = px.bar(x=teams_toss_win_count.index,
+                             y=teams_toss_win_count.values,
+                             title='Toss Winners'
+                             color=teams_toss_win_count.index,
+                             color_discrete_sequence=px.colors.qualitative.Safe)
+
                 st.plotly_chart(fig,
                                 transparent=True,
                                 use_container_width=True)
         ''', language='python')
 
-#####################################################################
-#### Chances of A Team Wiining Match if They Win The Toss ###########
-#####################################################################
-    with st.expander('👉 Probability of a Team Winning the Match After Winning the Toss'):
-        fig = plt.figure(figsize=(20, 5))
 
-        db = round(
+
+
+
+
+
+
+    #####################################################################
+    ########### Win Percentage of Team after Winning The Toss  ##########
+    #####################################################################
+    with st.expander('👉 Win Percentage of Team after Winning The Toss'):
+        fig = plt.figure(figsize=(15, 8))
+
+        win_percentage_after_toss = round(
             (
-                matches_team[matches_team['toss_winner'] == matches_team['winner']
-                             ]['winner'].value_counts() / matches_team['toss_winner'].value_counts()
-            ) * 100).sort_values(ascending=False)
+                new_matchesDF[new_matchesDF['toss_winner']
+                              == new_matchesDF['winner']]
+                ['winner'].value_counts() / new_matchesDF['toss_winner'].value_counts()
+            ) * 100
+        ).sort_values(ascending=False)
 
-        explode = [0.1] + [0] * (len(db) - 1)
+        explode = [0.1] + [0] * (len(win_percentage_after_toss) - 1)
 
         plt.rcParams.update({'text.color': "white",
-                            'axes.labelcolor': "black"})
+                             'axes.labelcolor': "black"})
 
-        db.plot(kind='pie',
-                autopct='%1.1f%%',
-                explode=explode,
-                shadow=True,
-                startangle=90)
+        win_percentage_after_toss.plot(kind='pie',
+                                       autopct='%1.1f%%',
+                                       explode=explode,
+                                       shadow=True,
+                                       startangle=90)
 
         plt.ylabel('')
+        plt.title('Win Percentage of Team after Winning The Toss')
 
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([3, 2])
 
         with col1:
             st.pyplot(fig,
                       transparent=True)
 
         with col2:
-            st.write('Overall Record Based On Team: ')
+            st.write('### Overall Record:')
+            st.dataframe(win_percentage_after_toss, width=500, height=575)
 
-            dt = round(
-                (
-                    matches_team[matches_team['toss_winner'] == matches_team['winner']
-                                 ]['winner'].value_counts() / matches_team['toss_winner'].value_counts()
-                )*100).sort_values(ascending=False)
+        if st.checkbox(label="View Code", key=7):
+            st.code('''
+                win_percentage_after_toss = round(
+                    (
+                        new_matchesDF[new_matchesDF['toss_winner']
+                                    == new_matchesDF['winner']]
+                        ['winner'].value_counts() / new_matchesDF['toss_winner'].value_counts()
+                    ) * 100
+                ).sort_values(ascending=False)
 
-            st.write(dt)
+                explode = [0.1] + [0] * (len(win_percentage_after_toss) - 1)
+
+                win_percentage_after_toss.plot(kind='pie',
+                                            autopct='%1.1f%%',
+                                            explode=explode,
+                                            shadow=True,
+                                            startangle=90)
+                                            
+                plt.rcParams.update({'text.color': "white",
+                                    'axes.labelcolor': "black"})
+
+                fig = plt.figure(figsize=(15, 8))
+                
+                plt.ylabel('')
+                
+                plt.title('Win Percentage of Team after Winning The Toss')
+
+                st.pyplot(fig, transparent=True)
+        ''', language='python')
 
 
-#####################################################################
-################### Team Wins Toss and Matches #######################
-#####################################################################
 
-    with st.expander('👉 Teams Winning Toss and Matches Both Since 2008'):
-        fig = plt.figure(figsize=(10, 6))
+
+
+
+
+
+    #####################################################################
+    ############### Teams Winning Both Toss and Matches #################
+    #####################################################################
+    with st.expander('👉 Teams Winning Both Toss and Matches Since 2008'):
+        toss_Match_winner = new_matchesDF[new_matchesDF['toss_winner'] == new_matchesDF['winner']
+                                          ]['winner'].value_counts()
+
+        plt.rcParams.update({'text.color': "white",
+                             'axes.labelcolor': "white",
+                             'xtick.color': 'white',
+                             'ytick.color': 'white'})
+
+        fig = plt.figure(figsize=(15, 8))
 
         color = ['white',
                  'yellow',
@@ -314,27 +442,16 @@ def app():
                  'magenta',
                  'cyan']
 
-        winners = matches_team[matches_team['toss_winner'] == matches_team['winner']
-                               ]['winner'].value_counts()
-
-        plt.rcParams.update({'text.color': "white",
-                             'axes.labelcolor': "white",
-                             'xtick.color': 'white',
-                             'ytick.color': 'white'})
-
-        winners.plot(kind='bar',
-                     color=color)
+        toss_Match_winner.plot(kind='bar',
+                               color=color)
 
         font = {"size": 20}
         plt.xticks(fontsize=18)
 
-        plt.title("Teams Winning Both Toss and Matches Since 2008",
-                  fontdict=font)
-
-        plt.xlabel("Team",
+        plt.xlabel("Teams",
                    fontdict=font)
 
-        plt.ylabel("Matches Won",
+        plt.ylabel("Total Matches Won",
                    fontdict=font)
 
         col1, col2 = st.columns(2)
@@ -344,162 +461,211 @@ def app():
                       transparent=True)
 
         with col2:
-            st.dataframe(winners,
-                         width=500,
-                         height=650)
+            st.write('### Records:')
+            st.dataframe(toss_Match_winner,
+                         width=400,
+                         height=570)
+
+        if st.checkbox(label="View Code", key=8):
+            st.code('''
+                        toss_Match_winner = new_matchesDF[new_matchesDF['toss_winner'] == new_matchesDF['winner']
+                                            ]['winner'].value_counts()
+
+                        plt.rcParams.update({'text.color': "white",
+                                            'axes.labelcolor': "white",
+                                            'xtick.color': 'white',
+                                            'ytick.color': 'white'})
+
+                        fig = plt.figure(figsize=(10, 6))
+
+                        color = ['white',
+                                'yellow',
+                                'purple',
+                                'red',
+                                'green',
+                                'magenta',
+                                'cyan']
+
+                        toss_Match_winner.plot(kind='bar',
+                                            color=color)
+
+                        font = {"size": 20}
+                        plt.xticks(fontsize=18)
+
+                        plt.title("Teams Winning Both Toss and Matches Since 2008",
+                                fontdict=font)
+
+                        plt.xlabel("Team",
+                                fontdict=font)
+
+                        plt.ylabel("Matches Won",
+                                fontdict=font)
+
+                        st.pyplot(fig, transparent=True)
+        ''', language='python')
 
 
-############################################################################
-############ Player With Most Runs #########################################
-###########################################################################
+
+
+
+
+
+
+    ############################################################################
+    ################## Top 20 Players With Most Runs ###########################
+    ############################################################################
     with st.expander('👉 Top 20 Players With Most Runs'):
-        fig = plt.figure(figsize=(10, 6))
-
         top_20_run_scorer = deliveries_df.groupby(
             'batter')['batsman_runs'].sum().sort_values(ascending=False)[:20]
 
-        plt.rcParams.update({'text.color': "white",
-                             'axes.labelcolor': "white",
-                             'xtick.color': 'white',
-                             'ytick.color': 'white'})
+        top_20_run_scorer_df = top_20_run_scorer.reset_index()
+        top_20_run_scorer_df.columns = ['Player', 'Runs']
 
-        plt.barh(top_20_run_scorer.index[::-1],
-                 top_20_run_scorer.values[::-1],
-                 color=color)
+        fig = px.bar(
+            top_20_run_scorer_df,
+            x='Runs',
+            y='Player',
+            labels={
+                'Player': 'Player',
+                'Runs': 'Total Runs'
+            },
+            color='Player',
+            color_discrete_sequence=px.colors.qualitative.Safe
+        )
 
-        font = {"size": 20}
-        plt.xticks(fontsize=25)
+        fig.update_layout(
+            yaxis_title='Player',
+            xaxis_title='Total Runs',
+            yaxis=dict(categoryorder='total ascending')
+        )
 
-        plt.title("Top 20 Players With Most Runs",
-                  fontdict=font)
+        st.plotly_chart(fig, transparent=True, use_container_width=True)
 
-        plt.xlabel("Runs",
-                   fontdict=font)
+        if st.checkbox(label="View Code", key=9):
+            st.code('''
+                        top_20_run_scorer = deliveries_df.groupby(
+                                            'batter')['batsman_runs'].sum().sort_values(ascending=False)[:20]
 
-        plt.ylabel("Player",
-                   fontdict=font)
+                        top_20_run_scorer_df = top_20_run_scorer.reset_index()
+                        top_20_run_scorer_df.columns = ['Player', 'Runs']
 
-        col1, col2 = st.columns(2)
+                        fig = px.bar(
+                            top_20_run_scorer_df,
+                            x='Runs',
+                            y='Player',
+                            labels={
+                                'Player': 'Player',
+                                'Runs': 'Total Runs'
+                            },
+                            color='Player',
+                            color_discrete_sequence=px.colors.qualitative.Safe
+                        )
 
-        with col1:
-            st.pyplot(fig,
-                      transparent=True)
+                        fig.update_layout(
+                            yaxis_title='Player',
+                            xaxis_title='Total Runs',
+                            yaxis=dict(categoryorder='total ascending')
+                        )
 
-        with col2:
-            st.dataframe(top_20_run_scorer,
-                         width=500,
-                         height=250)
+                        st.plotly_chart(fig, transparent=True, use_container_width=True)
+
+        ''', language='python')
 
 
-#############################################################################
-############### MOST EXPENSIVE BOWLER #######################################
-#############################################################################
+
+
+
+
+
+
+    #############################################################################
+    ###############           MOST EXPENSIVE BOWLERS              ###############
+    #############################################################################
+    def plot_bar(data, title, xlabel, ylabel, col_width=2, rows=1):
+        fig = plt.figure(figsize=(10, 6))
+
+        ax = sns.barplot(x='bowler',
+                         y='total_runs',
+                         data=data[:10],
+                         palette='viridis',
+                         hue=None)
+
+        plt.xticks(rotation=90, fontsize=10)
+
+        ax.bar_label(ax.containers[0])
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+
+        st.pyplot(fig, transparent=True)
+
     with st.expander("👉 Most Expensive Bowler"):
         st.write("> Overall Most Expensive Bowler:")
-
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([3, 2])
 
         with col1:
-            fig = plt.figure(figsize=(10, 6))
             overall = deliveries_df.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs',
                                                                                                          ascending=False).head(30)
-            ax = sns.barplot(x='bowler',
-                             y='total_runs',
-                             data=overall[:10])
-
-            plt.xticks(rotation='vertical',
-                       fontsize=10)
-
-            ax.bar_label(ax.containers[0])
-
-            plt.title('Overall Most Expensive Bowler')
-
-            st.pyplot(fig,
-                      transparent=True)
+            plot_bar(overall,
+                     'Overall Most Expensive Bowler',
+                     'Bowler',
+                     'Total Runs')
 
         with col2:
             st.dataframe(overall,
-                         400,
+                         width=400,
                          height=400)
 
         st.write('> Most Expensive Bowler in 1st Over:')
-        col3, col4 = st.columns(2)
+        col3, col4 = st.columns([3, 2])
 
         with col3:
-            fig = plt.figure(figsize=(10, 6))
-
-            first_over = deliveries_df[deliveries_df['over'] == 1]
+            first_over = deliveries_df[deliveries_df['over'] == 0]
 
             group = first_over.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs',
                                                                                                     ascending=False).head(30)
-
-            ax = sns.barplot(x='bowler',
-                             y='total_runs',
-                             data=group[:10])
-
-            plt.xticks(rotation='vertical',
-                       fontsize=10)
-
-            ax.bar_label(ax.containers[0])
-
-            plt.title('Most Expensive Bowler In 1st Over')
-
-            st.pyplot(fig,
-                      transparent=True)
+            plot_bar(group,
+                     'Most Expensive Bowler in 1st Over',
+                     'Bowler',
+                     'Total Runs')
 
         with col4:
             st.dataframe(group,
-                         400,
+                         width=400,
                          height=400)
 
-        st.write('> Over Most Expensive Bowler in 20th Over:')
-        col5, col6 = st.columns(2)
-        with col5:
-            fig = plt.figure(figsize=(10, 6))
+        st.write('> Most Expensive Bowler in 20th Over:')
+        col5, col6 = st.columns([3, 2])
 
+        with col5:
             twenty_over = deliveries_df[deliveries_df['over'] == 19]
 
             group = twenty_over.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs',
                                                                                                      ascending=False).head(30)
-
-            ax = sns.barplot(x='bowler',
-                             y='total_runs',
-                             data=group[:10])
-
-            plt.xticks(rotation='vertical',
-                       fontsize=10)
-
-            ax.bar_label(ax.containers[0])
-
-            plt.title('Most Expensive Bowler In 20th Over')
-
-            st.pyplot(fig,
-                      transparent=True)
+            plot_bar(group,
+                     'Most Expensive Bowler in 20th Over',
+                     'Bowler',
+                     'Total Runs')
 
         with col6:
             st.dataframe(group,
-                         400,
+                         width=400,
                          height=400)
 
     deliveries_latest = deliveries_df.copy()
+    deliveries_latest = latest_teams(
+        deliveries_latest, ['batting_team', 'bowling_team'])
 
-    deliveries_latest = latest_teams(deliveries_latest,
-                                     ['batting_team', 'bowling_team'])
 
-#######################################################################
-############################# Overwise Runs for Each Team #############
-#######################################################################
-    # with st.expander('👉 Average Runs per Over for Each Team (2008 - 2024)'):
-    #     corr = deliveries_latest.pivot_table(
-    #         values='total_runs', index='batting_team', columns='over') * 6
 
-    #     fig = px.imshow(corr, color_continuous_scale="ylgn", labels=dict(x="Over", y="Team", color="Runs"),
-    #                     x=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
-    #                         "12", "13", "14", "15", "16", "17", "18", "19", "20"],
-    #                     title='Overwise Average Runs For Each Team')
 
-    #     st.plotly_chart(fig, transparent=True, use_container_width=True)
 
+
+
+
+    #######################################################################
+    #####       Overwise Average Runs For Each Team Since 2008      #######
+    #######################################################################
     with st.expander('👉 Overwise Average Runs For Each Team Since 2008'):
         corr = deliveries_df.pivot_table(values='total_runs',
                                          index='batting_team',
@@ -512,222 +678,325 @@ def app():
 
         corr = corr[sorted(corr.columns)]
 
-        fig = px.imshow(corr,
-                        color_continuous_scale="Viridis",
-                        labels=dict(x="Over",
-                                    y="Team",
+        corr_transposed = corr.T
+
+        fig = px.imshow(corr_transposed,
+                        color_continuous_scale="viridis",
+                        labels=dict(x="Team",
+                                    y="Over",
                                     color="Runs"),
+                        x=corr_transposed.columns,
+                        y=corr_transposed.index)
 
-                        x=[str(i) for i in range(0, 20)],
+        fig.update_yaxes(tickvals=list(range(1, 21)),
+                         title_text='Overs',
+                         title_font_size=16)
 
-                        title='Overwise Average Runs For Each Team Since 2008')
+        fig.update_xaxes(title_text='Teams',
+                         title_font_size=16,
+                         tickangle=45)
 
         st.plotly_chart(fig,
                         transparent=True,
                         use_container_width=True)
 
 
-########################################################################
-############### Toss Decision Based On Top Venues ######################
-########################################################################
 
-    with st.expander('👉  Toss Decision Based On Top Venues'):
-        top_venues = matches_df['venue'].value_counts()[:15].index.to_list()
 
-        top_20_venues_matches = matches_df[matches_df['venue'].isin(
+
+
+
+
+    ########################################################################
+    #######          Toss Decision Based On Top Venues         #############
+    ########################################################################
+    with st.expander('👉 Toss Decision Based on Top Venues'):
+        top_venues = new_matchesDF['venue'].value_counts().head(
+            15).index.to_list()
+
+        top_venues_matches = new_matchesDF[new_matchesDF['venue'].isin(
             top_venues)]
-        top_20_venues_matches['venue'] = top_20_venues_matches['venue'] + \
-            ", "+top_20_venues_matches['city']
-        top_20 = top_20_venues_matches.groupby(['venue', 'toss_decision']).count(
-        )['toss_winner'].reset_index().sort_values('venue', ascending=False)
 
-        fig = plt.figure(figsize=(20, 5))
-        plt.rcParams.update({'text.color': "white", 'axes.labelcolor': "white",
-                            'xtick.color': 'white', 'ytick.color': 'white'})
+        top_venues_matches['venue_location'] = top_venues_matches['venue'].astype(
+            str) + ", " + top_venues_matches['city'].astype(str)
 
-        ax = sns.barplot(y='toss_winner', x='venue',
-                         hue='toss_decision', data=top_20)
-        ax.bar_label(ax.containers[0])
-        ax.bar_label(ax.containers[1])
-        leg = plt.legend()
-        for text in leg.get_texts():
+        venue_toss_stats = top_venues_matches.groupby(
+            ['venue_location', 'toss_decision']).size().reset_index(name='count')
+
+        venue_toss_stats = venue_toss_stats.sort_values(by='count',
+                                                        ascending=False)
+
+        fig, ax = plt.subplots(figsize=(15, 8))
+
+        plt.rcParams.update({'text.color': "white",
+                            'axes.labelcolor': "white",
+                             'xtick.color': 'white',
+                             'ytick.color': 'white'})
+
+        sns.barplot(x='venue_location',
+                    y='count',
+                    hue='toss_decision',
+                    data=venue_toss_stats,
+                    ax=ax)
+
+        ax.bar_label(ax.containers[0],
+                     label_type='edge',
+                     color='white')
+
+        ax.bar_label(ax.containers[1],
+                     label_type='edge',
+                     color='white')
+
+        legend = plt.legend()
+        for text in legend.get_texts():
             text.set_color("black")
-        plt.xticks(rotation='vertical', fontsize=16)
-        plt.title('Toss Winner Choice Based On Venue', fontsize=16)
+
+        plt.xticks(rotation=45,
+                   ha='right',
+                   fontsize=10)
+
+        plt.title('Toss Decision Based on Top Venues', fontsize=16)
+        plt.xlabel('Venue and City', fontsize=14)
+        plt.ylabel('Count', fontsize=14)
 
         st.pyplot(fig, transparent=True)
-        top_20 = top_20.rename(columns={'toss_winner': 'Count'})
-        st.dataframe(top_20, width=700, height=300)
+
+        venue_toss_stats = venue_toss_stats.rename(
+            columns={'count': 'Count',
+                     'toss_decision': 'Decision Taken'})
+
+        st.dataframe(venue_toss_stats.sort_values(by='Count', ascending=False),
+                     width=800,
+                     height=400)
 
 
-#############################################################################
-################# Average Runs By Different Teams In Last Over ##############
-#############################################################################
 
-    with st.expander('👉  Average Runs Scored By Different Teams In Last Over'):
 
-        fig = plt.figure(figsize=(10, 6))
-        twenty = deliveries_latest[deliveries_latest['over'] == 20]
-        twenty_over_scores = round(twenty.groupby('batting_team')[
-                                   'total_runs'].mean()*6).round(2).sort_values(ascending=False)
-        ax = sns.barplot(twenty_over_scores.values, twenty_over_scores.index)
+
+
+
+
+    #############################################################################
+    ###########         Average Runs By Teams In Last Over         ##############
+    #############################################################################
+    with st.expander('👉 Average Runs Scored By Teams In Last Over'):
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+        last_over = deliveries_df[deliveries_df['over'] == 19]
+
+        twenty_over_scores = round(
+            last_over.groupby('batting_team')['total_runs'].mean() * 6
+        ).sort_values(ascending=False)
+
+        sns.barplot(x=twenty_over_scores.values,
+                    y=twenty_over_scores.index,
+                    palette=sns.color_palette(
+                        "viridis", n_colors=len(twenty_over_scores)),
+                    ax=ax)
+
         ax.bar_label(ax.containers[0])
-        plt.title('Average Runs By Different Teams In Last Over')
-        plt.xlabel('Score')
-        plt.ylabel('Playing Team')
+
+        plt.xlabel('Average Runs')
+        plt.ylabel('Teams')
+
         st.pyplot(fig, transparent=True)
 
 
-##############################################################################
-##### Total Runs Score By Different Teams In Last Over Till Start of IPL #####
-##############################################################################
-    with st.expander('👉  Total RUns By Different Teams In Last Over Since Start of IPL'):
-        fig = plt.figure(figsize=(12, 8))
-        twenty = deliveries_latest[deliveries_latest['over'] == 20]
-        twenty_over_scores = (twenty.groupby('batting_team')[
-                              'total_runs'].sum()).sort_values(ascending=False)
-        # plt.barh(twenty_over_scores.index,twenty_over_scores.values);
-        ax = sns.barplot(twenty_over_scores.values, twenty_over_scores.index)
-        ax.bar_label(ax.containers[0])
-        plt.title('Total Runs By Different Teams In Last Over')
-        plt.xlabel('Score')
-        plt.ylabel('Playing Team')
-        st.pyplot(fig, transparent=True)
-
-    # COMBINING BOTH DATASETS (Latest)
-    combine_df = matches_team.merge(
-        deliveries_latest, left_on='id', right_on='match_id', how='left')
-
-###############################################################################
-##### Total Runs By Different Teams In Last Over In First Edition (2008) ######
-###############################################################################
-
-    with st.expander('👉  Runs By Different Teams In Last Over In First Edition (2008)'):
-
-        st.write('> Total Runs')
-
-        fig = plt.figure(figsize=(12, 8))
-        twenty = combine_df[(combine_df['over'] == 20) &
-                            (combine_df['Season'] == 'IPL-2008')]
-        twenty_over_scores = (twenty.groupby('batting_team')[
-                              'total_runs'].sum()).sort_values(ascending=False)
-        # plt.barh(twenty_over_scores.index,twenty_over_scores.values);
-        ax = sns.barplot(twenty_over_scores.values, twenty_over_scores.index)
-        ax.bar_label(ax.containers[0])
-        plt.title('Total Runs By Different Teams In Last Over')
-        plt.xlabel('Score')
-        plt.ylabel('Playing Team')
-        st.pyplot(fig, transparent=True)
 
 
-###############################################################################
-##### Average Runs By Different Teams In Last Over In First Edition (2008) ####
-###############################################################################
-
-        st.write('> Average Runs')
-
-        fig = plt.figure(figsize=(12, 8))
-        twenty = combine_df[(combine_df['over'] == 20) &
-                            (combine_df['Season'] == 'IPL-2008')]
-        twenty_over_scores = (twenty.groupby('batting_team')[
-                              'total_runs'].sum()).sort_values(ascending=False)
-        # plt.barh(twenty_over_scores.index,twenty_over_scores.values);
-        ax = sns.barplot(twenty_over_scores.values, twenty_over_scores.index)
-        ax.bar_label(ax.containers[0])
-        plt.title('Average Runs By Different Teams In Last Over')
-        plt.xlabel('Score')
-        plt.ylabel('Playing Team')
-        st.pyplot(fig, transparent=True)
 
 
-##############################################################################
-### Total Runs Scored in Each Season #########################
-##############################################################################
-
-    with st.expander('👉  Total Runs Scored in Each Season'):
-        # fig = plt.figure(figsize=(10,8))
-        plt.rcParams.update({'text.color': "white", 'axes.labelcolor': "white",
-                            'xtick.color': 'white', 'ytick.color': 'white'})
-
-        combine_df['Season'] = combine_df['Season'].apply(
-            lambda x: x.split('-')[-1])
-        season = combine_df.groupby('Season')['total_runs'].sum().reset_index()
-        temp4 = season.set_index('Season')
-
-        # ax = sns.relplot(x=temp4.index,y=temp4['total_runs'],kind='line',height=5, aspect=2)
-        # plt.title("Total Runs Scored In Each Season",fontsize=16)
-        # plt.xticks(fontsize=16)
-        # plt.xlabel("IPL Season",fontdict={'size':18})
-        # plt.ylabel("Total Runs",fontdict={'size':18})
-        # col00, col01 = st.columns(2)
-        # with col00:
-        #     st.pyplot(ax,transparent=True)
-        # with col01:
-        #     st.dataframe(temp4,width=500,height=300)
-
-        fig = px.line(data_frame=temp4, x=temp4.index, y='total_runs',
-                      title='Total Runs Scored In Each Season')
-        st.plotly_chart(fig, transparent=True, use_container_width=True)
 
 
-#####################################################################
-############ Count of Matches By Different Umpires ##################
-#####################################################################
+    ##############################################################################
+    #####           Total Runs Scored By Teams In Last Over Since 2008       #####
+    ##############################################################################
+    with st.expander('👉 Total Runs Scored By Teams In Last Over Since 2008'):
+        last_over = deliveries_df[deliveries_df['over'] == 19]
 
-    with st.expander('👉  Count of Matches By Different Umpires'):
+        twenty_over_scores = last_over.groupby('batting_team')[
+            'total_runs'].sum().sort_values(ascending=False)
+
+        fig = px.bar(x=twenty_over_scores.values,
+                     y=twenty_over_scores.index,
+                     orientation='h',
+                     labels={'x': 'Total Runs', 'y': 'Teams'},
+                     color=twenty_over_scores.index,
+                     color_discrete_sequence=px.colors.sequential.Viridis,
+                     text=twenty_over_scores.values)
+
+        fig.update_layout(yaxis=dict(
+            autorange="reversed",
+            showgrid=False
+        ),
+            xaxis=dict(showgrid=False),
+            plot_bgcolor='rgba(0,0,0,0)',
+            showlegend=False)
+
+        st.plotly_chart(fig,
+                        use_container_width=True)
+
+        combine_df = new_matchesDF.merge(
+            deliveries_latest,
+            left_on='id',
+            right_on='match_id',
+            how='left')
+
+
+
+
+
+
+
+
+    ##############################################################################
+    ###                    Total Runs Scored in Each Season                 ######
+    ##############################################################################
+    with st.expander('👉 Total Runs Scored in Each Season'):
+        plt.rcParams.update({'text.color': "white",
+                            'axes.labelcolor': "white",
+                             'xtick.color': 'white',
+                             'ytick.color': 'white'})
+
+        new_matchesDF['season'] = new_matchesDF['season'].astype(str)
+
+        season_runs = new_matchesDF.groupby(
+            'season')['target_runs'].sum().reset_index()
+
+        temp4 = season_runs.set_index('season')
+
+        fig = px.line(data_frame=temp4,
+                      x=temp4.index,
+                      y='target_runs',
+                      labels={'target_runs': 'Total Runs', 'Season': 'Season'},
+                      markers=True)
+
+        fig.update_layout(
+            xaxis_title='Season',
+            yaxis_title='Total Runs',
+            title_x=0.5,
+            xaxis=dict(showgrid=False),
+            yaxis=dict(showgrid=True),
+        )
+
+        st.plotly_chart(fig,
+                        use_container_width=True)
+
+
+
+
+
+
+
+
+    #####################################################################
+    ###           Count of Matches By Different Umpires               ###
+    #####################################################################
+    with st.expander('👉 Count of Matches Umpired By Different Umpires'):
         fig = plt.figure(figsize=(15, 8))
+
         umpires = pd.concat(
-            [matches_df['umpire1'], matches_df['umpire2']]).value_counts()
+            [new_matchesDF['umpire1'],
+             new_matchesDF['umpire2']]).value_counts()
+
         top_10_umpires = umpires.nlargest(10)
-        ax = sns.barplot(top_10_umpires.index, top_10_umpires.values)
+
+        ax = sns.barplot(x=top_10_umpires.index,
+                         y=top_10_umpires.values,
+                         palette=sns.color_palette("viridis", len(top_10_umpires)))
+
         ax.bar_label(ax.containers[0])
-        plt.title('Maches Played By Umpires')
+
         plt.xlabel('Umpire Name')
-        plt.ylabel('Matches Played')
-        st.pyplot(fig, transparent=True)
+        plt.ylabel('Matches Umpired')
+
+        st.pyplot(fig,
+                  transparent=True)
 
 
-###########################################################################
-############ Lucky Venue For Teams ########################################
-###########################################################################
 
+
+
+
+
+
+    ###########################################################################
+    ############ Lucky Venue For Teams ########################################
+    ###########################################################################
     with st.expander('👉  Lucky Venue For Teams'):
-        teams = matches_team.team1.unique().tolist()
-        matches_team['venue'] = matches_team['venue']+", "+matches_team['city']
+        teams = new_matchesDF.team1.unique().tolist()
+
+        new_matchesDF['venue'] = new_matchesDF['venue'] + \
+            ", " + new_matchesDF['city']
+
         for team in teams:
             fig = plt.figure(figsize=(15, 8))
+
             team_name = team
-            lucky_venues = matches_team[matches_team['winner'] ==
-                                        team_name]['venue'].value_counts().nlargest(10)
-            explode = (0.1, 0.1, 0, 0, 0, 0, 0, 0, 0, 0)
+
+            lucky_venues = new_matchesDF[new_matchesDF['winner']
+                                         == team_name]['venue'].value_counts().nlargest(10)
+
+            num_venues = len(lucky_venues)
+
+            explode = [0.1] * num_venues
             colors = ['turquoise', 'lightblue',
                       'lightgreen', 'crimson', 'magenta', 'orange']
-            plt.rcParams.update({'text.color': "white", 'axes.labelcolor': "white",
-                                'xtick.color': 'white', 'ytick.color': 'white'})
-            lucky_venues.plot(kind='pie', autopct='%1.1f%%', explode=explode,
-                              shadow=True, startangle=20, textprops={'fontsize': 10}, colors=colors)
-            plt.title(f'Win at different Venues for {team}')
+            colors = colors * (num_venues // len(colors) + 1)
+            colors = colors[:num_venues]
+
+            plt.rcParams.update({'text.color': "white",
+                                'axes.labelcolor': "white",
+                                 'xtick.color': 'white',
+                                 'ytick.color': 'white'})
+
+            lucky_venues.plot(kind='pie',
+                              autopct='%1.1f%%',
+                              explode=explode,
+                              shadow=True,
+                              startangle=20,
+                              textprops={'fontsize': 10},
+                              colors=colors)
+
+            plt.title(f'Win Percentage at Different Venues for {team}')
+
             plt.ylabel('')
+
             st.pyplot(fig, transparent=True)
 
 
-#####################################################################
-#################### Teams with more than 200+ scores ###############
-#####################################################################
 
-    with st.expander('👉  Teams With More Than 200+ Scores'):
-        fig = plt.figure(figsize=(10, 7))
-        plt.rcParams.update({'text.color': "white", 'axes.labelcolor': "white",
-                            'xtick.color': 'white', 'ytick.color': 'white'})
-        runs = deliveries_latest.groupby(['match_id', 'inning', 'batting_team', 'bowling_team'])[
+
+
+
+
+
+    #####################################################################
+    ####              Teams with more than 200+ scores               ####
+    #####################################################################
+    with st.expander('👉 Teams With More Than 200+ Scores'):
+        runs = deliveries_df.groupby(['match_id', 'inning', 'batting_team', 'bowling_team'])[
             'total_runs'].sum().reset_index()
+
         runs_over_200_df = runs[runs['total_runs'] > 200]
+
         runs_over_200 = runs_over_200_df['batting_team'].value_counts()
 
-        ax = sns.barplot(runs_over_200.index, runs_over_200.values)
+        fig = plt.figure(figsize=(10, 7))
+
+        plt.rcParams.update({'text.color': "white",
+                             'axes.labelcolor': "white",
+                            'xtick.color': 'white',
+                             'ytick.color': 'white'})
+
+        ax = sns.barplot(x=runs_over_200.index,
+                         y=runs_over_200.values, palette='viridis')
+
         ax.bar_label(ax.containers[0])
+
         plt.xticks(rotation='vertical')
         plt.title('Most 200+ Runs Scored By Teams')
         plt.xlabel('Teams')
-        plt.ylabel('Runs')
+        plt.ylabel('Number of Instances')
+
         st.pyplot(fig, transparent=True)
