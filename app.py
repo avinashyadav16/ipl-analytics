@@ -1,7 +1,12 @@
+import streamlit as st
 import homePage
 import exploratoryDataAnalysis
-import team_vs_team
-import streamlit as st
+import playerAnalysis
+import batter_vs_bowlerAnalysis
+import teamAnalysis
+import team_vs_teamAnalysis
+import scorePrediction
+import winnerPrediction
 
 st.set_page_config(
     page_title="IPL ANALYSIS",
@@ -21,13 +26,13 @@ st.markdown(
 
 PAGES = {
     "HOME": homePage,
-    "EDA": exploratoryDataAnalysis,
-    "Team vs Team": team_vs_team,
-    # "Player Analysis": player,
-    # "Team Analysis": team,
-    # "Batsman vs Bowler": bat_vs_bowl,
-    # "Predict First Innings Score": predict_score,
-    # "Predict Winner Probability Based On Second Innings": predict_winner
+    "Exploratory Data Analysis": exploratoryDataAnalysis,
+    "Player Analysis": playerAnalysis,
+    "Team V/S Team": team_vs_teamAnalysis,
+    "Team Analysis": teamAnalysis,
+    "Batter V/S Bowler": batter_vs_bowlerAnalysis,
+    "Predict Score": scorePrediction,
+    "Predict Win Probability": winnerPrediction
 }
 
 

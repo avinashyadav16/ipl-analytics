@@ -6,115 +6,43 @@ import plotly.express as px
 import plotly.offline as pyo
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-
-
-
-
-def latest_teams(df, cols):
-
-    temp = df.copy()
-    teams = [
-        'Royal Challengers Bengaluru',
-        'Kings XI Punjab',
-        'Sunrisers Hyderabad',
-        'Delhi Capitals',
-        'Gujarat Titans',
-        'Mumbai Indians',
-        'Kolkata Knight Riders',
-        'Lucknow Super Giants',
-        'Rajasthan Royals',
-        'Chennai Super Kings',
-        'Gujarat Lions',
-        'Pune Warriors',
-        'Rising Pune Supergiant',
-        'Rising Pune Supergiants',
-        'Kochi Tuskers Kerala'
-    ]
-
-    for col in cols:
-        temp[col] = temp[col].str.replace(
-            'Deccan Chargers',
-            'Sunrisers Hyderabad')
-
-        temp[col] = temp[col].str.replace(
-            'Delhi Daredevils',
-            'Delhi Capitals')
-
-        temp[col] = temp[col].str.replace(
-            'Royal Challengers Bangalore',
-            'Royal Challengers Bengaluru')
-
-        temp[col] = temp[col].str.replace(
-            'Punjab Kings',
-            'Kings XI Punjab')
-
-    for col in cols:
-        temp = temp[(temp[col].isin(teams))]
-
-    return temp
-
-
-
-
-
-
-
+from datasetPreprocessing import new_matchesDF, new_deliveriesDF
 
 
 def app():
     st.markdown('''
     <h1 style='text-align:center;'> 🌟EXPLORATORY DATA ANALYSIS🌟</h1>
     ''', unsafe_allow_html=True)
-    
 
     #################################################################
     ################## MATCHES DATASET LOADING ######################
     #################################################################
     with st.expander('👉 Matches Dataset: 2008 - 2024'):
-        matches_df = pd.read_csv('matches_2008-2024.csv')
-        matches_df.columns = matches_df.columns.str.strip()
-
-        st.write(matches_df.head(5))
+        st.write(new_matchesDF.head(5))
 
         if st.checkbox(label="View Code", key=0):
             st.code('''
-                        matches_df = pd.read_csv('matches_2008-2024.csv')
+                        new_matchesDF = pd.read_csv('matches_2008-2024.csv')
                         
-                        matches_df.columns = matches_df.columns.str.strip()
+                        new_matchesDF.columns = new_matchesDF.columns.str.strip()
 
-                        st.write(matches_df.head(5))
+                        st.write(new_matchesDF.head(5))
                     ''', language='python')
-
-
-
-
-
 
     #################################################################
     ################## DELEVERY DATASET LOADING #####################
     #################################################################
     with st.expander('👉 Deliveries Dataset: 2008 - 2024'):
-        deliveries_df = pd.read_csv('deliveries_2008-2024.csv')
-        deliveries_df.columns = deliveries_df.columns.str.strip()
-
-        st.write(deliveries_df.head(5))
+        st.write(new_deliveriesDF.head(5))
 
         if st.checkbox(label="View Code", key=1):
             st.code('''
-                        deliveries_df = pd.read_csv('deliveries_2008-2024.csv')
+                        new_deliveriesDF = pd.read_csv('deliveries_2008-2024.csv')
                         
-                        deliveries_df.columns = deliveries_df.columns.str.strip()
+                        new_deliveriesDF.columns = new_deliveriesDF.columns.str.strip()
                         
-                        st.write(deliveries_df.head(5))
+                        st.write(new_deliveriesDF.head(5))
                     ''', language='python')
-
-    new_matchesDF = latest_teams(
-        matches_df, ['team1', 'team2', 'toss_winner', 'winner'])
-
-
-
-
-
 
     #################################################################
     ################## MATCHES PER SEASON ###########################
@@ -167,11 +95,6 @@ def app():
                                         use_container_width = True)
                     ''', language='python')
 
-
-
-
-
-
     ####################################################################
     ########## Most Man of The Match Award Received By Players #########
     ###################################################################
@@ -208,13 +131,6 @@ def app():
                                         transparent = True,
                                         use_container_width = True)
                     ''', language='python')
-
-
-
-
-
-
-
 
     ##########################################################################
     ################ Venues With Most Matches ################################
@@ -253,15 +169,8 @@ def app():
                                         use_container_width=True)
                     ''', language='python')
 
-
-
-
-
-
-
-
     ###########################################################################
-    ###################### Team With Most Toss Wins ###########################
+    ###################### Team With Most Match Wins ##########################
     ###########################################################################
     with st.expander('👉 Team With Most Match Wins'):
         teams_total_toss_win = new_matchesDF['winner'].value_counts(
@@ -271,7 +180,7 @@ def app():
             y=teams_total_toss_win.index,
             x=teams_total_toss_win.values,
             labels={
-                'y': 'Total Wins',
+                'y': 'Total Matches Won',
                 'x': 'Team'
             },
             color=teams_total_toss_win.index,
@@ -300,13 +209,6 @@ def app():
                                         use_container_width=True)
             ''', language='python')
 
-
-
-
-
-
-
-
     ##################################################################
     #################### Team With Most Toss Wins ####################
     ##################################################################
@@ -316,6 +218,10 @@ def app():
         fig = px.bar(x=teams_toss_win_count.index,
                      y=teams_toss_win_count.values,
                      title='Toss Winners',
+                     labels={
+                         'y': 'Total Tosses Won',
+                         'x': 'Team'
+                     },
                      color=teams_toss_win_count.index,
                      color_discrete_sequence=px.colors.qualitative.Safe)
 
@@ -337,13 +243,6 @@ def app():
                                 transparent=True,
                                 use_container_width=True)
         ''', language='python')
-
-
-
-
-
-
-
 
     #####################################################################
     ########### Win Percentage of Team after Winning The Toss  ##########
@@ -412,13 +311,6 @@ def app():
 
                 st.pyplot(fig, transparent=True)
         ''', language='python')
-
-
-
-
-
-
-
 
     #####################################################################
     ############### Teams Winning Both Toss and Matches #################
@@ -504,18 +396,11 @@ def app():
                         st.pyplot(fig, transparent=True)
         ''', language='python')
 
-
-
-
-
-
-
-
     ############################################################################
     ################## Top 20 Players With Most Runs ###########################
     ############################################################################
     with st.expander('👉 Top 20 Players With Most Runs'):
-        top_20_run_scorer = deliveries_df.groupby(
+        top_20_run_scorer = new_deliveriesDF.groupby(
             'batter')['batsman_runs'].sum().sort_values(ascending=False)[:20]
 
         top_20_run_scorer_df = top_20_run_scorer.reset_index()
@@ -543,7 +428,7 @@ def app():
 
         if st.checkbox(label="View Code", key=9):
             st.code('''
-                        top_20_run_scorer = deliveries_df.groupby(
+                        top_20_run_scorer = new_deliveriesDF.groupby(
                                             'batter')['batsman_runs'].sum().sort_values(ascending=False)[:20]
 
                         top_20_run_scorer_df = top_20_run_scorer.reset_index()
@@ -571,16 +456,10 @@ def app():
 
         ''', language='python')
 
-
-
-
-
-
-
-
     #############################################################################
     ###############           MOST EXPENSIVE BOWLERS              ###############
     #############################################################################
+
     def plot_bar(data, title, xlabel, ylabel, col_width=2, rows=1):
         fig = plt.figure(figsize=(10, 6))
 
@@ -588,7 +467,8 @@ def app():
                          y='total_runs',
                          data=data[:10],
                          palette='viridis',
-                         hue=None)
+                         hue=None,
+                         legend=False)
 
         plt.xticks(rotation=90, fontsize=10)
 
@@ -604,8 +484,8 @@ def app():
         col1, col2 = st.columns([3, 2])
 
         with col1:
-            overall = deliveries_df.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs',
-                                                                                                         ascending=False).head(30)
+            overall = new_deliveriesDF.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs',
+                                                                                                            ascending=False).head(30)
             plot_bar(overall,
                      'Overall Most Expensive Bowler',
                      'Bowler',
@@ -620,7 +500,7 @@ def app():
         col3, col4 = st.columns([3, 2])
 
         with col3:
-            first_over = deliveries_df[deliveries_df['over'] == 0]
+            first_over = new_deliveriesDF[new_deliveriesDF['over'] == 0]
 
             group = first_over.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs',
                                                                                                     ascending=False).head(30)
@@ -638,7 +518,7 @@ def app():
         col5, col6 = st.columns([3, 2])
 
         with col5:
-            twenty_over = deliveries_df[deliveries_df['over'] == 19]
+            twenty_over = new_deliveriesDF[new_deliveriesDF['over'] == 19]
 
             group = twenty_over.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs',
                                                                                                      ascending=False).head(30)
@@ -652,25 +532,14 @@ def app():
                          width=400,
                          height=400)
 
-    deliveries_latest = deliveries_df.copy()
-    deliveries_latest = latest_teams(
-        deliveries_latest, ['batting_team', 'bowling_team'])
-
-
-
-
-
-
-
-
     #######################################################################
     #####       Overwise Average Runs For Each Team Since 2008      #######
     #######################################################################
     with st.expander('👉 Overwise Average Runs For Each Team Since 2008'):
-        corr = deliveries_df.pivot_table(values='total_runs',
-                                         index='batting_team',
-                                         columns='over',
-                                         aggfunc='mean').fillna(0) * 6
+        corr = new_deliveriesDF.pivot_table(values='total_runs',
+                                            index='batting_team',
+                                            columns='over',
+                                            aggfunc='mean').fillna(0) * 6
 
         for over in range(0, 20):
             if over not in corr.columns:
@@ -699,13 +568,6 @@ def app():
         st.plotly_chart(fig,
                         transparent=True,
                         use_container_width=True)
-
-
-
-
-
-
-
 
     ########################################################################
     #######          Toss Decision Based On Top Venues         #############
@@ -737,6 +599,7 @@ def app():
                     y='count',
                     hue='toss_decision',
                     data=venue_toss_stats,
+                    legend=False,
                     ax=ax)
 
         ax.bar_label(ax.containers[0],
@@ -769,20 +632,13 @@ def app():
                      width=800,
                      height=400)
 
-
-
-
-
-
-
-
     #############################################################################
     ###########         Average Runs By Teams In Last Over         ##############
     #############################################################################
     with st.expander('👉 Average Runs Scored By Teams In Last Over'):
         fig, ax = plt.subplots(figsize=(10, 6))
 
-        last_over = deliveries_df[deliveries_df['over'] == 19]
+        last_over = new_deliveriesDF[new_deliveriesDF['over'] == 19]
 
         twenty_over_scores = round(
             last_over.groupby('batting_team')['total_runs'].mean() * 6
@@ -792,6 +648,8 @@ def app():
                     y=twenty_over_scores.index,
                     palette=sns.color_palette(
                         "viridis", n_colors=len(twenty_over_scores)),
+                    hue=None,
+                    legend=False,
                     ax=ax)
 
         ax.bar_label(ax.containers[0])
@@ -801,18 +659,11 @@ def app():
 
         st.pyplot(fig, transparent=True)
 
-
-
-
-
-
-
-
     ##############################################################################
     #####           Total Runs Scored By Teams In Last Over Since 2008       #####
     ##############################################################################
     with st.expander('👉 Total Runs Scored By Teams In Last Over Since 2008'):
-        last_over = deliveries_df[deliveries_df['over'] == 19]
+        last_over = new_deliveriesDF[new_deliveriesDF['over'] == 19]
 
         twenty_over_scores = last_over.groupby('batting_team')[
             'total_runs'].sum().sort_values(ascending=False)
@@ -837,17 +688,10 @@ def app():
                         use_container_width=True)
 
         combine_df = new_matchesDF.merge(
-            deliveries_latest,
+            new_deliveriesDF,
             left_on='id',
             right_on='match_id',
             how='left')
-
-
-
-
-
-
-
 
     ##############################################################################
     ###                    Total Runs Scored in Each Season                 ######
@@ -882,13 +726,6 @@ def app():
         st.plotly_chart(fig,
                         use_container_width=True)
 
-
-
-
-
-
-
-
     #####################################################################
     ###           Count of Matches By Different Umpires               ###
     #####################################################################
@@ -903,7 +740,10 @@ def app():
 
         ax = sns.barplot(x=top_10_umpires.index,
                          y=top_10_umpires.values,
-                         palette=sns.color_palette("viridis", len(top_10_umpires)))
+                         palette=sns.color_palette(
+                             "viridis", len(top_10_umpires)),
+                         hue=None,
+                         legend=False)
 
         ax.bar_label(ax.containers[0])
 
@@ -913,21 +753,15 @@ def app():
         st.pyplot(fig,
                   transparent=True)
 
-
-
-
-
-
-
-
     ###########################################################################
     ############ Lucky Venue For Teams ########################################
     ###########################################################################
     with st.expander('👉  Lucky Venue For Teams'):
         teams = new_matchesDF.team1.unique().tolist()
 
-        new_matchesDF['venue'] = new_matchesDF['venue'] + \
-            ", " + new_matchesDF['city']
+        # new_matchesDF['venue'] = new_matchesDF['venue'] + \
+        #     ", " + new_matchesDF['city']
+        new_matchesDF['venue'] = new_matchesDF['venue']
 
         for team in teams:
             fig = plt.figure(figsize=(15, 8))
@@ -964,18 +798,11 @@ def app():
 
             st.pyplot(fig, transparent=True)
 
-
-
-
-
-
-
-
     #####################################################################
     ####              Teams with more than 200+ scores               ####
     #####################################################################
     with st.expander('👉 Teams With More Than 200+ Scores'):
-        runs = deliveries_df.groupby(['match_id', 'inning', 'batting_team', 'bowling_team'])[
+        runs = new_deliveriesDF.groupby(['match_id', 'inning', 'batting_team', 'bowling_team'])[
             'total_runs'].sum().reset_index()
 
         runs_over_200_df = runs[runs['total_runs'] > 200]
@@ -990,7 +817,9 @@ def app():
                              'ytick.color': 'white'})
 
         ax = sns.barplot(x=runs_over_200.index,
-                         y=runs_over_200.values, palette='viridis')
+                         y=runs_over_200.values, palette='viridis',
+                         hue=None,
+                         legend=False)
 
         ax.bar_label(ax.containers[0])
 
