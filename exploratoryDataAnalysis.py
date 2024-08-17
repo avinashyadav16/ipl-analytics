@@ -532,6 +532,32 @@ def app():
                          width=400,
                          height=400)
 
+        if st.checkbox(label="View Code", key=10):
+            st.code('''
+                        overall = new_deliveriesDF.groupby('bowler')['total_runs'].agg('sum').reset_index().sort_values('total_runs', 
+                                                                                                                                    ascending=False).head(30)
+
+                        fig = plt.figure(figsize=(10, 6))
+
+                        top_bowlers = overall.head(10)
+
+                        ax = sns.barplot(x='bowler',
+                                        y='total_runs',
+                                        data=top_bowlers,
+                                        palette='viridis')
+
+                        plt.xticks(rotation=90, 
+                                    fontsize=10)
+
+                        ax.bar_label(ax.containers[0])
+
+                        plt.title('Overall Most Expensive Bowler')
+                        plt.xlabel('Bowler')
+                        plt.ylabel('Total Runs')
+
+                        st.pyplot(fig, transparent=True)
+        ''', language='python')
+
     #######################################################################
     #####       Overwise Average Runs For Each Team Since 2008      #######
     #######################################################################
