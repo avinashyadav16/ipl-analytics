@@ -25,12 +25,12 @@ st.markdown(
 )
 
 PAGES = {
-    "Player Analysis": playerAnalysis,
     "HOME": homePage,
     "Exploratory Data Analysis": exploratoryDataAnalysis,
-    "Team v/s Team": team_vs_teamAnalysis,
+    "Player Analysis": playerAnalysis,
     "Team Analysis": teamAnalysis,
     "Batter v/s Bowler": batter_vs_bowlerAnalysis,
+    "Team v/s Team": team_vs_teamAnalysis,
     "Predict Score": scorePrediction,
     "Predict Win Probability": winnerPrediction
 }

@@ -1,24 +1,17 @@
-import plotly
-import pandas as pd
-import seaborn as sns
 import streamlit as st
-import plotly.express as px
-import plotly.offline as pyo
-import exploratoryDataAnalysis
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-from datasetPreprocessing import new_matchesDF, new_deliveriesDF
+from scrollToTop import create_scroll_to_top_button
+from datasetPreprocessing import new_deliveriesDF
+
+
+
+
 
 
 def app():
     st.markdown('''
     <h1 style='text-align:center;'> 🏏 PLAYER ANALYSIS 🏏</h1>
     ''', unsafe_allow_html=True)
-
-    # Batsman = [batsman.strip()
-    #            for batsman in new_deliveriesDF['batter'].unique().tolist()]
-    # Bowler = [bowler.strip()
-    #           for bowler in new_deliveriesDF['bowler'].unique().tolist()]
 
     Batsman = new_deliveriesDF['batter'].unique().tolist()
     Bowler = new_deliveriesDF['bowler'].unique().tolist()
@@ -29,217 +22,379 @@ def app():
     player = st.selectbox("Select A Player", Players)
     Analyze = st.button('Analyze')
 
+    ###########################################################
+    # --------------->   PLAYER AS BATSMAN      <--------------
+    ###########################################################
+    
+    
     if Analyze:
-        ###########################################################
-        # --------------->   PLAYER AS BATSMAN      <--------------
-        ###########################################################
-        selected_player_df = new_deliveriesDF[new_deliveriesDF['batter'] == player]
+        selected_player_bat_df = new_deliveriesDF[new_deliveriesDF['batter'] == player]
 
-        if len(selected_player_df) != 0:
+        if len(selected_player_bat_df) != 0:
             ###########################################################
             # ----------->   RUNS AGAINST OTHER TEAMS      <-----------
             ###########################################################
-            st.markdown(f"<h3 style='text-align: center; color: white;'><em>{
-                        player}'s Performance Against Other Teams</em></h3>", unsafe_allow_html=True)
 
-            player_runs_against_teams = selected_player_df.groupby('bowling_team')['total_runs'].sum().reset_index().sort_values(
+            player_runs_against_teams = selected_player_bat_df.groupby('bowling_team')['total_runs'].sum().reset_index().sort_values(
                 by='total_runs', ascending=False)
 
-            fig = plt.figure(figsize=(12, 6))
+            fig = go.Figure()
 
-            custom_palette = sns.color_palette("coolwarm",
-                                               len(player_runs_against_teams))
+            fig.add_trace(go.Bar(
+                x=player_runs_against_teams['bowling_team'],
+                y=player_runs_against_teams['total_runs'],
+                marker=dict(color=player_runs_against_teams['total_runs'],
+                            colorscale='Viridis'),
+                text=player_runs_against_teams['total_runs'],
+                textposition='auto',
+                hoverinfo='y+x',
+            ))
 
-            ax = sns.barplot(data=player_runs_against_teams,
-                             x='bowling_team',
-                             y='total_runs',
-                             palette=custom_palette)
+            fig.update_layout(
+                title=f"{
+                    player.strip()}'s Batting Performance Against Other Teams",
+                xaxis_title="Teams",
+                yaxis_title="Total Runs Scored",
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(tickangle=-45),
+            )
 
-            for container in ax.containers:
-                ax.bar_label(container,
-                             fontsize=10,
-                             padding=3,
-                             weight='bold')
-
-            plt.xticks(fontsize=10,
-                       rotation=45,
-                       ha='right')
-
-            plt.xlabel('Teams',
-                       fontsize=14,
-                       color='blue',
-                       weight='bold')
-
-            plt.ylabel('Total Runs Scored',
-                       fontsize=14,
-                       color='blue',
-                       weight='bold')
-
-            plt.grid(axis='y',
-                     linestyle='--',
-                     color='gray',
-                     alpha=0.7)
-
-            st.pyplot(fig,
-                      transparent=True)
+            st.plotly_chart(fig,
+                            use_container_width=True)
 
             st.image("Images/divider.png")
+            
+            
+            
+            
+            
+            
+            
 
-        #############################################################
-        # Runs Against Different Bowlers
-        #############################################################
+            #############################################################
+            # --------->   RUNS AGAINST DIFFERENT BOWLERS      <---------
+            #############################################################
+            player_runs_against_bowlers = selected_player_bat_df.groupby('bowler')['total_runs'].sum().reset_index().sort_values(
+                by='total_runs', ascending=False)[:15]
 
-            st. markdown(f"<h5 style='text-align: center; color: white;'> {
-                         player} Performance Against Different Bowlers (Top 15)  </h5>", unsafe_allow_html=True)
+            fig = go.Figure()
 
-            player_runs_against_bowlers = selected_player_df.groupby('bowler')['total_runs'].sum(
-            ).reset_index().sort_values(by='total_runs', ascending=False)
-            player_runs_against_bowlers = player_runs_against_bowlers[:15]
-            fig = plt.figure(figsize=(20, 5))
-            ax = sns.barplot(data=player_runs_against_bowlers,
-                             x='bowler', y='total_runs')
-            ax.bar_label(ax.containers[0])
-            plt.title(
-                f'{player} Performance Against Different Bowlers (Top 15)')
-            plt.xlabel('Bewlers')
-            plt.ylabel('Runs')
-            plt.xticks(fontsize=10)
-            st.pyplot(fig, transparent=True)
+            fig.add_trace(go.Bar(
+                x=player_runs_against_bowlers['bowler'],
+                y=player_runs_against_bowlers['total_runs'],
+                marker=dict(color=player_runs_against_bowlers['total_runs'],
+                            colorscale='Viridis'),
+                text=player_runs_against_bowlers['total_runs'],
+                textposition='auto',
+                hoverinfo='y+x',
+            ))
+
+            fig.update_layout(
+                title=f"{
+                    player.strip()}'s Batting Performance Against Different Bowlers [Top 15]",
+                xaxis_title="Bowlers",
+                yaxis_title="Total Runs Scored",
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(tickangle=-45),
+            )
+
+            st.plotly_chart(fig,
+                            use_container_width=True)
+
             st.image("Images/divider.png")
-        #############################################################
-        # Partnership runs
-        #############################################################
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
-            st. markdown(f"<h5 style='text-align: center; color: white;'> {
-                         player} Runs With Partner At non-striker (Top 15)  </h5>", unsafe_allow_html=True)
+            #############################################################
+            # ---------------->   PARTNERSHIP RUNS      <----------------
+            #############################################################
+            player_partnership_runs = selected_player_bat_df.groupby('non_striker')['total_runs'].sum().reset_index().sort_values(
+                by='total_runs', ascending=False)[:15]
 
-            player_partnership_runs = selected_player_df.groupby('non_striker')['total_runs'].sum(
-            ).reset_index().sort_values(by='total_runs', ascending=False)
-            player_partnership_runs = player_partnership_runs[:15]
-            fig = plt.figure(figsize=(20, 5))
-            ax = sns.barplot(data=player_partnership_runs,
-                             x='non_striker', y='total_runs')
-            ax.bar_label(ax.containers[0])
-            plt.title(f'{player} Runs With Partner At non-striker (Top 15)')
-            plt.xlabel('Players')
-            plt.ylabel('Runs')
-            plt.xticks(fontsize=12)
+            fig = go.Figure()
 
-            st.pyplot(fig, transparent=True)
+            fig.add_trace(go.Bar(
+                x=player_partnership_runs['non_striker'],
+                y=player_partnership_runs['total_runs'],
+                marker=dict(color=player_partnership_runs['total_runs'],
+                            colorscale='Viridis'),
+                text=player_partnership_runs['total_runs'],
+                textposition='auto',
+                hoverinfo='y+x',
+            ))
+
+            fig.update_layout(
+                title=f"{
+                    player.strip()}'s Batting Runs With Partner At non-striker [Top 15]",
+                xaxis_title="Players",
+                yaxis_title="Total Runs Scored",
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(tickangle=-45, tickfont=dict(size=12)),
+                height=500,
+            )
+
+            st.plotly_chart(fig,
+                            use_container_width=True)
+
             st.image("Images/divider.png")
-        #############################################################
-        # Player Runs In Different Innings
-        #############################################################
-            st. markdown(f"<h5 style='text-align: center; color: white;'> {
-                         player} Runs On Different Innings  </h5>", unsafe_allow_html=True)
+            
+            
+            
+            
+            
 
-            fig = plt.figure(figsize=(8, 4))
-            innings_runs = selected_player_df[selected_player_df['inning'] < 3]
-            innings = innings_runs.groupby('inning')['total_runs'].sum()
-            ax = sns.barplot(x=innings.index, y=innings.values)
-            ax.bar_label(ax.containers[0])
-            plt.title(f'{player} Runs On Different Innings')
-            plt.xlabel('Innings')
-            plt.ylabel('Runs')
-            plt.xticks(fontsize=12)
-            st.pyplot(fig, transparent=True)
+            #############################################################
+            # ------->   PLAYER'S RUNS IN DIFFERENT INNINGS      <-------
+            #############################################################
+            innings_runs = selected_player_bat_df[selected_player_bat_df['inning'] < 3]
+
+            innings = innings_runs.groupby(
+                'inning')['total_runs'].sum().reset_index()
+
+            fig = go.Figure()
+
+            fig.add_trace(go.Bar(
+                x=innings['inning'],
+                y=innings['total_runs'],
+                text=innings['total_runs'],
+                textposition='auto',
+                marker=dict(color=innings['total_runs'],
+                            colorscale='Viridis'),
+                hoverinfo='y+x',
+            ))
+
+            fig.update_layout(
+                title=f"{player.strip()}'s Batting Runs In Different Innings",
+                xaxis_title="Innings",
+                yaxis_title="Runs Scored",
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(tickfont=dict(size=12)),
+                height=400,
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
             st.image("Images/divider.png")
 
         else:
-            st. markdown(f"<h5 style='text-align: center; color: red;'> OOPS! No Data Found For Batting Carrer of {
-                         player} in IPL </h5>", unsafe_allow_html=True)
-    #############################################################
-    ###### Player as bowler ####################################
-    #############################################################
+            st.markdown(f"<h5 style='text-align: center; color: red;'> No Data Found For Batting Carrer of {
+                player} in IPL History</h5>", unsafe_allow_html=True)
 
-        player_df_bowl = new_deliveriesDF[new_deliveriesDF['bowler'] == player]
 
-        if len(player_df_bowl) != 0:
-            tr = player_df_bowl['total_runs'].sum()
-            st. markdown(f"<h5 style='text-align: center; color: white;'> Runs Given Against Different Players For {
-                         player} (Top 15)  </h5>", unsafe_allow_html=True)
 
-            # Runs Given Against Different Players
-            player_df_bowl_players = player_df_bowl.groupby('batter')['total_runs'].sum(
-            ).reset_index().sort_values(by='total_runs', ascending=False)[:15]
-            fig = plt.figure(figsize=(20, 5))
-            ax = sns.barplot(data=player_df_bowl_players,
-                             x='batter', y='total_runs')
-            ax.bar_label(ax.containers[0])
-            # plt.title(f'Runs Given Against Different Players For {player} (Top 15) ')
-            plt.xlabel('Players')
-            plt.ylabel('Runs')
-            plt.xticks(fontsize=12)
-            st.pyplot(fig, transparent=True)
+
+
+
+
+
+        ###########################################################
+        # --------------->   PLAYER AS BOWLER      <--------------
+        ###########################################################
+
+        selected_player_boll_df = new_deliveriesDF[new_deliveriesDF['bowler'] == player]
+
+        if len(selected_player_boll_df) != 0:
+            #############################################################
+            # -------->   RUNS GIVEN TO DIFFERENT PLAYERS      <--------
+            #############################################################
+            player_df_bowl_players = selected_player_boll_df.groupby('batter')['total_runs'].sum().reset_index().sort_values(
+                by='total_runs', ascending=False)[:15]
+
+            fig = go.Figure()
+
+            fig.add_trace(go.Bar(
+                x=player_df_bowl_players['batter'],
+                y=player_df_bowl_players['total_runs'],
+                text=player_df_bowl_players['total_runs'],
+                textposition='auto',
+                marker=dict(color=player_df_bowl_players['total_runs'],
+                            colorscale='Viridis'),
+                hoverinfo='y+x',
+            ))
+
+            fig.update_layout(
+                title=f"Runs Scored By Different Players Against {
+                    player.strip()}'s (Top 15)",
+                xaxis_title="Players",
+                yaxis_title="Runs",
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(tickangle=-45, tickfont=dict(size=12)),
+                height=400,
+            )
+
+            st.plotly_chart(fig,
+                            use_container_width=True)
+
             st.image("Images/divider.png")
-            # Runs Given In Different Overs
 
-            st. markdown(f"<h5 style='text-align: center; color: white;'> Total Runs Given By {
-                         player} in different overs </h5>", unsafe_allow_html=True)
 
-            player_df_bowl_overs = player_df_bowl.groupby('over')['total_runs'].sum(
-            ).reset_index().sort_values(by='over', ascending=True)
-            fig = plt.figure(figsize=(10, 6))
-            ax = sns.lineplot(data=player_df_bowl_overs,
-                              x='over', y='total_runs', markers=True)
-            for x, y in zip(player_df_bowl_overs['over'], player_df_bowl_overs['total_runs']):
-                plt.text(x=x, y=y, s='{:.0f}'.format(
-                    y), color='white').set_backgroundcolor('purple')
-            ax.set_xticks(range(0, 21, 1))
-            # ax.set_title(f'Total Runs Given By {player} in different overs')
-            st.pyplot(fig, transparent=True)
+
+
+
+
+
+            #############################################################
+            # --------->   RUNS GIVEN IN DIFFERENT OVERS      <---------
+            #############################################################
+
+            player_df_bowl_overs = selected_player_boll_df.groupby('over')['total_runs'].sum().reset_index().sort_values(
+                by='over', ascending=True)
+
+            fig = go.Figure()
+
+            fig.add_trace(go.Scatter(
+                x=player_df_bowl_overs['over'],
+                y=player_df_bowl_overs['total_runs'],
+                mode='lines+markers+text',
+                text=player_df_bowl_overs['total_runs'],
+                textposition='top center',
+                marker=dict(color='purple', size=8),
+                line=dict(color='purple', width=2),
+            ))
+
+            fig.update_layout(
+                title=f'Total Runs Given By {
+                    player.strip()} in Different Overs',
+                xaxis_title="Overs",
+                yaxis_title="Total Runs",
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(
+                    tickmode='linear',
+                    tick0=1,
+                    dtick=1,
+                    range=[-1, 20],
+                    fixedrange=True
+                ),
+                height=400,
+            )
+
+            st.plotly_chart(fig,
+                            use_container_width=True)
+
             st.image("Images/divider.png")
 
-            st. markdown(f"<h5 style='text-align: center; color: white;'> Overs Thrown By {
-                         player} </h5>", unsafe_allow_html=True)
 
-            # Number of Times a Over is Balled By The Player
-            player_df_bowl_overs_n = player_df_bowl['over'].value_counts(
+
+
+
+
+
+
+            #############################################################
+            # --------->   OVERS THROWN BY THE PLAYER      <---------
+            #############################################################
+            selected_player_boll_over = selected_player_boll_df['over'].value_counts(
             ).reset_index()
 
-            player_df_bowl_overs_n['over'] = player_df_bowl_overs_n['over'].astype(
+            selected_player_boll_over.columns = ['over', 'count']
+
+            selected_player_boll_over['over'] = selected_player_boll_over['over'].astype(
                 int)
 
-            player_df_bowl_overs_n = player_df_bowl_overs_n.rename(
-                columns={'index': 'over', "over": 'count'})
-            player_df_bowl_overs_n = player_df_bowl_overs_n.sort_values(
+            selected_player_boll_over = selected_player_boll_over.sort_values(
                 by='over')
-            player_df_bowl_overs_n['count'] = (
-                player_df_bowl_overs_n['count']/6).round(2)
 
-            fig = plt.figure(figsize=(10, 6))
-            ax = sns.lineplot(data=player_df_bowl_overs_n,
-                              x='over', y='count', markers=True)
-            for x, y in zip(player_df_bowl_overs_n['over'], player_df_bowl_overs_n['count']):
-                plt.text(x=x, y=y, s='{:.2f}'.format(
-                    y), color='white').set_backgroundcolor('purple')
-            ax.set_xticks(range(0, 21, 1))
-            # ax.set_title(f'Overs Thrown By {player}')
-            st.pyplot(fig, transparent=True)
+            selected_player_boll_over['count'] = (
+                selected_player_boll_over['count'] / 6).round(2)
+
+            fig = go.Figure()
+
+            fig.add_trace(go.Scatter(
+                x=selected_player_boll_over['over'],
+                y=selected_player_boll_over['count'],
+                mode='lines+markers+text',
+                text=selected_player_boll_over['count'],
+                textposition='top center',
+                marker=dict(color='purple', size=8),
+                line=dict(color='purple', width=2),
+            ))
+
+            fig.update_layout(
+                title=f'Number of Times an Over is Bowled By {player.strip()}',
+                xaxis_title="Overs",
+                yaxis_title="Count (Overs)",
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(tickmode='linear', dtick=1),
+                height=400,
+            )
+
+            st.plotly_chart(fig,
+                            use_container_width=True)
+
             st.image("Images/divider.png")
-            st. markdown(f"<h5 style='text-align: center; color: white;'> Runs Given Against Different Teams For {
-                         player} </h5>", unsafe_allow_html=True)
+            
+            
+            
+            
+            
+            
+            
 
-            # Runs Given Against Different Teams
+            #############################################################
+            # --------->   RUNS GIVEN TO DIFFERENT TEAMS      <---------
+            #############################################################
             player_df_bowl_n = new_deliveriesDF[new_deliveriesDF['bowler'] == player]
-            player_df_bowl_teams = player_df_bowl_n.groupby('batting_team')['total_runs'].sum(
-            ).reset_index().sort_values(by='total_runs', ascending=False)[:15]
 
-            fig = plt.figure(figsize=(20, 5))
-            ax = sns.barplot(data=player_df_bowl_teams,
-                             x='batting_team', y='total_runs')
-            ax.bar_label(ax.containers[0])
-            # plt.title(f'Runs Given Against Different Teams For {player}')
-            plt.xlabel('Teams')
-            plt.ylabel('Runs')
-            plt.xticks(fontsize=9)
+            player_df_bowl_teams = player_df_bowl_n.groupby('batting_team')['total_runs'].sum().reset_index().sort_values(
+                by='total_runs', ascending=False)[:15]
 
-            st.pyplot(fig, transparent=True)
+            fig = go.Figure()
+
+            fig.add_trace(go.Bar(
+                x=player_df_bowl_teams['batting_team'],
+                y=player_df_bowl_teams['total_runs'],
+                text=player_df_bowl_teams['total_runs'],
+                textposition='outside',
+                marker=dict(color=player_df_bowl_teams['total_runs'],
+                            colorscale='Viridis'),
+            ))
+
+            fig.update_layout(
+                title=f'Runs Scored By Different Teams Against {
+                    player.strip()}',
+                xaxis_title='Teams',
+                yaxis_title='Runs',
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white'),
+                xaxis=dict(tickangle=-45,
+                           tickmode='array',
+                           tickvals=player_df_bowl_teams['batting_team']),
+                height=500,
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
             st.image("Images/divider.png")
 
         else:
-            st. markdown(f"<h5 style='text-align: center; color: red;'> OOPS! No Data Found For Bowling Carrer of {
-                         player} in IPL </h5>", unsafe_allow_html=True)
+            st. markdown(f"<h5 style='text-align: center; color: red;'> No Data Found About The Bowling Carrer of {
+                         player} in IPL History </h5>", unsafe_allow_html=True)
 
-        st.image("Images/divider.png")
-        st. markdown(f"<h6 style='text-align: center; color: white;'> “A wise man learns by the mistakes of others, a fool by own.”– Adam Gilchrist </h6>", unsafe_allow_html=True)
+
+
+
+
+
+    create_scroll_to_top_button(key_suffix="playerAnalysis")
