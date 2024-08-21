@@ -1,9 +1,7 @@
-import plotly
 import pandas as pd
 import seaborn as sns
 import streamlit as st
 import plotly.express as px
-import plotly.offline as pyo
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from datasetPreprocessing import new_matchesDF, new_deliveriesDF
@@ -13,6 +11,9 @@ def app():
     st.markdown('''
     <h1 style='text-align:center;'> 🌟EXPLORATORY DATA ANALYSIS🌟</h1>
     ''', unsafe_allow_html=True)
+
+
+
 
     #################################################################
     ################## MATCHES DATASET LOADING ######################
@@ -29,6 +30,9 @@ def app():
                         st.write(new_matchesDF.head(5))
                     ''', language='python')
 
+
+
+
     #################################################################
     ################## DELEVERY DATASET LOADING #####################
     #################################################################
@@ -43,6 +47,9 @@ def app():
                         
                         st.write(new_deliveriesDF.head(5))
                     ''', language='python')
+
+
+
 
     #################################################################
     ################## MATCHES PER SEASON ###########################
@@ -95,6 +102,9 @@ def app():
                                         use_container_width = True)
                     ''', language='python')
 
+
+
+
     ####################################################################
     ########## Most Man of The Match Award Received By Players #########
     ###################################################################
@@ -132,6 +142,9 @@ def app():
                                         use_container_width = True)
                     ''', language='python')
 
+
+
+
     ##########################################################################
     ################ Venues With Most Matches ################################
     ##########################################################################
@@ -168,6 +181,9 @@ def app():
                                         transparent=True,
                                         use_container_width=True)
                     ''', language='python')
+            
+            
+            
 
     ###########################################################################
     ###################### Team With Most Match Wins ##########################
@@ -209,6 +225,10 @@ def app():
                                         use_container_width=True)
             ''', language='python')
 
+
+
+
+
     ##################################################################
     #################### Team With Most Toss Wins ####################
     ##################################################################
@@ -243,6 +263,10 @@ def app():
                                 transparent=True,
                                 use_container_width=True)
         ''', language='python')
+            
+            
+            
+            
 
     #####################################################################
     ########### Win Percentage of Team after Winning The Toss  ##########
@@ -311,6 +335,10 @@ def app():
 
                 st.pyplot(fig, transparent=True)
         ''', language='python')
+
+
+
+
 
     #####################################################################
     ############### Teams Winning Both Toss and Matches #################
@@ -396,6 +424,10 @@ def app():
                         st.pyplot(fig, transparent=True)
         ''', language='python')
 
+
+
+
+
     ############################################################################
     ################## Top 20 Players With Most Runs ###########################
     ############################################################################
@@ -455,6 +487,10 @@ def app():
                         st.plotly_chart(fig, transparent=True, use_container_width=True)
 
         ''', language='python')
+
+
+
+
 
     #############################################################################
     ###############           MOST EXPENSIVE BOWLERS              ###############
@@ -558,6 +594,11 @@ def app():
                         st.pyplot(fig, transparent=True)
         ''', language='python')
 
+
+
+
+
+
     #######################################################################
     #####       Overwise Average Runs For Each Team Since 2008      #######
     #######################################################################
@@ -594,6 +635,10 @@ def app():
         st.plotly_chart(fig,
                         transparent=True,
                         use_container_width=True)
+
+
+
+
 
     ########################################################################
     #######          Toss Decision Based On Top Venues         #############
@@ -657,6 +702,10 @@ def app():
         st.dataframe(venue_toss_stats.sort_values(by='Count', ascending=False),
                      width=800,
                      height=400)
+        
+        
+        
+        
 
     #############################################################################
     ###########         Average Runs By Teams In Last Over         ##############
@@ -684,6 +733,10 @@ def app():
         plt.ylabel('Teams')
 
         st.pyplot(fig, transparent=True)
+
+
+
+
 
     ##############################################################################
     #####           Total Runs Scored By Teams In Last Over Since 2008       #####
@@ -719,6 +772,10 @@ def app():
             right_on='match_id',
             how='left')
 
+
+
+
+
     ##############################################################################
     ###                    Total Runs Scored in Each Season                 ######
     ##############################################################################
@@ -752,6 +809,10 @@ def app():
         st.plotly_chart(fig,
                         use_container_width=True)
 
+
+
+
+
     #####################################################################
     ###           Count of Matches By Different Umpires               ###
     #####################################################################
@@ -778,6 +839,10 @@ def app():
 
         st.pyplot(fig,
                   transparent=True)
+
+
+
+
 
     ###########################################################################
     ############ Lucky Venue For Teams ########################################
@@ -823,6 +888,11 @@ def app():
             plt.ylabel('')
 
             st.pyplot(fig, transparent=True)
+
+
+
+
+
 
     #####################################################################
     ####              Teams with more than 200+ scores               ####
