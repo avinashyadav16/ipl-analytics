@@ -4,10 +4,6 @@ from scrollToTop import create_scroll_to_top_button
 from datasetPreprocessing import new_deliveriesDF
 
 
-
-
-
-
 def app():
     st.markdown('''
     <h1 style='text-align:center;'> 🏏 PLAYER ANALYSIS 🏏</h1>
@@ -21,14 +17,23 @@ def app():
 
     player = st.selectbox("Select A Player", Players)
     Analyze = st.button('Analyze')
+    
+    
+
 
     ###########################################################
     # --------------->   PLAYER AS BATSMAN      <--------------
     ###########################################################
-    
-    
+
     if Analyze:
         selected_player_bat_df = new_deliveriesDF[new_deliveriesDF['batter'] == player]
+
+
+
+
+
+
+
 
         if len(selected_player_bat_df) != 0:
             ###########################################################
@@ -65,13 +70,14 @@ def app():
                             use_container_width=True)
 
             st.image("Images/divider.png")
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
 
             #############################################################
             # --------->   RUNS AGAINST DIFFERENT BOWLERS      <---------
@@ -106,15 +112,14 @@ def app():
                             use_container_width=True)
 
             st.image("Images/divider.png")
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
 
             #############################################################
             # ---------------->   PARTNERSHIP RUNS      <----------------
@@ -150,11 +155,15 @@ def app():
                             use_container_width=True)
 
             st.image("Images/divider.png")
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
 
             #############################################################
             # ------->   PLAYER'S RUNS IN DIFFERENT INNINGS      <-------
@@ -184,7 +193,7 @@ def app():
                 paper_bgcolor='rgba(0,0,0,0)',
                 font=dict(color='white'),
                 xaxis=dict(tickfont=dict(size=12)),
-                height=400,
+                height=600,
             )
 
             st.plotly_chart(fig, use_container_width=True)
@@ -192,8 +201,11 @@ def app():
             st.image("Images/divider.png")
 
         else:
-            st.markdown(f"<h5 style='text-align: center; color: red;'> No Data Found For Batting Carrer of {
-                player} in IPL History</h5>", unsafe_allow_html=True)
+            st.markdown(f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Batting Stats For {
+                        player} In IPL History ⚠</h5>", unsafe_allow_html=True)
+
+
+
 
 
 
@@ -207,6 +219,13 @@ def app():
         ###########################################################
 
         selected_player_boll_df = new_deliveriesDF[new_deliveriesDF['bowler'] == player]
+
+
+
+
+
+
+
 
         if len(selected_player_boll_df) != 0:
             #############################################################
@@ -236,13 +255,15 @@ def app():
                 paper_bgcolor='rgba(0,0,0,0)',
                 font=dict(color='white'),
                 xaxis=dict(tickangle=-45, tickfont=dict(size=12)),
-                height=400,
+                height=600,
             )
 
             st.plotly_chart(fig,
                             use_container_width=True)
 
             st.image("Images/divider.png")
+
+
 
 
 
@@ -269,6 +290,16 @@ def app():
                 line=dict(color='purple', width=2),
             ))
 
+            for i in range(len(player_df_bowl_overs)):
+                fig.add_trace(go.Scatter(
+                    x=[player_df_bowl_overs['over'][i],
+                        player_df_bowl_overs['over'][i]],
+                    y=[0, player_df_bowl_overs['total_runs'][i]],
+                    mode='lines',
+                    line=dict(color='purple', width=1, dash='dot'),
+                    showlegend=False
+                ))
+
             fig.update_layout(
                 title=f'Total Runs Given By {
                     player.strip()} in Different Overs',
@@ -284,7 +315,7 @@ def app():
                     range=[-1, 20],
                     fixedrange=True
                 ),
-                height=400,
+                height=600,
             )
 
             st.plotly_chart(fig,
@@ -328,6 +359,16 @@ def app():
                 line=dict(color='purple', width=2),
             ))
 
+            for i in range(len(selected_player_boll_over)):
+                fig.add_trace(go.Scatter(
+                    x=[selected_player_boll_over['over'][i],
+                        selected_player_boll_over['over'][i]],
+                    y=[0, selected_player_boll_over['count'][i]],
+                    mode='lines',
+                    line=dict(color='purple', width=1, dash='dot'),
+                    showlegend=False
+                ))
+
             fig.update_layout(
                 title=f'Number of Times an Over is Bowled By {player.strip()}',
                 xaxis_title="Overs",
@@ -336,20 +377,21 @@ def app():
                 paper_bgcolor='rgba(0,0,0,0)',
                 font=dict(color='white'),
                 xaxis=dict(tickmode='linear', dtick=1),
-                height=400,
+                height=600,
             )
 
             st.plotly_chart(fig,
                             use_container_width=True)
 
             st.image("Images/divider.png")
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
 
             #############################################################
             # --------->   RUNS GIVEN TO DIFFERENT TEAMS      <---------
@@ -389,8 +431,8 @@ def app():
             st.image("Images/divider.png")
 
         else:
-            st. markdown(f"<h5 style='text-align: center; color: red;'> No Data Found About The Bowling Carrer of {
-                         player} in IPL History </h5>", unsafe_allow_html=True)
+            st.markdown(f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Bowling Stats For {
+                        player} In IPL History ⚠</h5>", unsafe_allow_html=True)
 
 
 
