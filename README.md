@@ -2,6 +2,8 @@
 
 ![IPL Logo](https://upload.wikimedia.org/wikipedia/en/thumb/1/19/TATA_IPL_2024_Logo.png/175px-TATA_IPL_2024_Logo.png)
 
+<img title="repo views" src="https://repoviews.netlify.app/.netlify/functions/repoViews?file=app.py">
+
 ## Overview
 
 The Indian Premier League (IPL), founded in 2008, is a premier Twenty20 (T20) cricket league that has captivated audiences worldwide. This project offers an in-depth analysis of the IPL, spanning from its inception to the 2024 season. By leveraging the latest and most comprehensive IPL dataset, the analysis delves into match statistics, player performances, team comparisons, and much more.
