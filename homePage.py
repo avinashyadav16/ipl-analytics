@@ -4,9 +4,9 @@ import streamlit as st
 def app():
     st.markdown(
         '''
-        <h1 style='text-align:center;'>
-        IPL ANALYSIS AND PREDICTIONS 🏏 
-        </h1><br>
+        <h1 style='text-align:center; color: #c089f8;'><strong>🏏 IPL ANALYSIS AND PREDICTIONS 🏏 </strong></h1>
+        <hr style="border-top: 3px solid #c089f8;">
+        <br>
 
         <center>
         <img style="width: 66%; border-radius: 25px;" 

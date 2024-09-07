@@ -6,7 +6,8 @@ from datasetPreprocessing import new_deliveriesDF
 
 def app():
     st.markdown('''
-    <h1 style='text-align:center;'> 🏏 PLAYER ANALYSIS 🏏</h1>
+    <h1 style='text-align:center; color: #4fb9fc;'><strong>🏏 PLAYER ANALYSIS 🏏</strong></h1>
+    <hr style="border-top: 3px solid #4fb9fc;">
     ''', unsafe_allow_html=True)
 
     Batsman = new_deliveriesDF['batter'].unique().tolist()
@@ -17,9 +18,6 @@ def app():
 
     player = st.selectbox("Select A Player", Players)
     Analyze = st.button('Analyze')
-    
-    
-
 
     ###########################################################
     # --------------->   PLAYER AS BATSMAN      <--------------
@@ -27,13 +25,6 @@ def app():
 
     if Analyze:
         selected_player_bat_df = new_deliveriesDF[new_deliveriesDF['batter'] == player]
-
-
-
-
-
-
-
 
         if len(selected_player_bat_df) != 0:
             ###########################################################
@@ -71,14 +62,6 @@ def app():
 
             st.image("Images/divider.png")
 
-
-
-
-
-
-
-
-
             #############################################################
             # --------->   RUNS AGAINST DIFFERENT BOWLERS      <---------
             #############################################################
@@ -112,14 +95,6 @@ def app():
                             use_container_width=True)
 
             st.image("Images/divider.png")
-
-
-
-
-
-
-
-
 
             #############################################################
             # ---------------->   PARTNERSHIP RUNS      <----------------
@@ -155,15 +130,6 @@ def app():
                             use_container_width=True)
 
             st.image("Images/divider.png")
-
-
-
-
-
-
-
-
-
 
             #############################################################
             # ------->   PLAYER'S RUNS IN DIFFERENT INNINGS      <-------
@@ -204,28 +170,11 @@ def app():
             st.markdown(f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Batting Stats For {
                         player} In IPL History ⚠</h5>", unsafe_allow_html=True)
 
-
-
-
-
-
-
-
-
-
-
         ###########################################################
         # --------------->   PLAYER AS BOWLER      <--------------
         ###########################################################
 
         selected_player_boll_df = new_deliveriesDF[new_deliveriesDF['bowler'] == player]
-
-
-
-
-
-
-
 
         if len(selected_player_boll_df) != 0:
             #############################################################
@@ -262,14 +211,6 @@ def app():
                             use_container_width=True)
 
             st.image("Images/divider.png")
-
-
-
-
-
-
-
-
 
             #############################################################
             # --------->   RUNS GIVEN IN DIFFERENT OVERS      <---------
@@ -322,13 +263,6 @@ def app():
                             use_container_width=True)
 
             st.image("Images/divider.png")
-
-
-
-
-
-
-
 
             #############################################################
             # --------->   OVERS THROWN BY THE PLAYER      <---------
@@ -385,14 +319,6 @@ def app():
 
             st.image("Images/divider.png")
 
-
-
-
-
-
-
-
-
             #############################################################
             # --------->   RUNS GIVEN TO DIFFERENT TEAMS      <---------
             #############################################################
@@ -433,10 +359,5 @@ def app():
         else:
             st.markdown(f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Bowling Stats For {
                         player} In IPL History ⚠</h5>", unsafe_allow_html=True)
-
-
-
-
-
 
     create_scroll_to_top_button(key_suffix="playerAnalysis")

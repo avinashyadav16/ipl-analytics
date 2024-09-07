@@ -9,7 +9,8 @@ from datasetPreprocessing import new_matchesDF, new_deliveriesDF
 
 def app():
     st.markdown('''
-    <h1 style='text-align:center;'> 🌟EXPLORATORY DATA ANALYSIS🌟</h1>
+    <h1 style='text-align:center; color: #e8630a;'><strong>🌟EXPLORATORY DATA ANALYSIS🌟</strong></h1>
+    <hr style="border-top: 3px solid #e8630a;">
     ''', unsafe_allow_html=True)
 
     #################################################################

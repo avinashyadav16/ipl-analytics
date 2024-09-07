@@ -1,12 +1,7 @@
 import pandas as pd
 
-# Load and clean the matches data
-matches_df = pd.read_csv('matches_2008-2024.csv')
-matches_df.columns = matches_df.columns.str.strip()
 
 # Function to standardize team names and filter the dataset for latest teams
-
-
 def latest_teams(df, cols):
     # Dictionary to map old team names to their latest names
     team_name_map = {
@@ -53,14 +48,36 @@ def unique_stadium(matches_df):
     matches_df['venue'] = matches_df['venue'].replace(venue_map)
 
 
-# Apply the cleaning functions to the matches data
-new_matchesDF = latest_teams(
-    matches_df, ['team1', 'team2', 'toss_winner', 'winner'])
-unique_stadium(new_matchesDF)
+def trimSpaceInValues(df):
+    for col in df.columns:
+        if df[col].dtype == 'object':  # Ensure the column is of string type
+            df[col] = df[col].str.strip()
+    return df
+
+
+# Load and clean the matches data
+matches_df = pd.read_csv('matches_2008-2024.csv')
+matches_df.columns = matches_df.columns.str.strip()
 
 # Load and clean the deliveries data
 deliveries_df = pd.read_csv('deliveries_2008-2024.csv')
 deliveries_df.columns = deliveries_df.columns.str.strip()
+
+
+# Apply the function to your DataFrame
+matches_df = trimSpaceInValues(matches_df)
+deliveries_df = trimSpaceInValues(deliveries_df)
+
+# Replacing the empty values in the 'extra_types' with the 'None' When it is normal deliveries:
+deliveries_df.loc[deliveries_df['extras_type'].str.strip() ==
+                  '', 'extras_type'] = 'None'
+
+# Apply the cleaning functions to the matches data
+new_matchesDF = latest_teams(
+    matches_df, ['team1', 'team2', 'toss_winner', 'winner'])
+
+unique_stadium(new_matchesDF)
+
 
 # Apply the latest_teams function to deliveries data
 new_deliveriesDF = latest_teams(
