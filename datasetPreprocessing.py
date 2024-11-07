@@ -1,14 +1,15 @@
 import pandas as pd
 
 
-# Function to standardize team names and filter the dataset for latest teams
+# Updating the team names
 def latest_teams(df, cols):
-    # Dictionary to map old team names to their latest names
+    # mapping old to latest
     team_name_map = {
         'Deccan Chargers': 'Sunrisers Hyderabad',
         'Delhi Daredevils': 'Delhi Capitals',
         'Royal Challengers Bangalore': 'Royal Challengers Bengaluru',
-        'Punjab Kings': 'Kings XI Punjab'
+        'Punjab Kings': 'Kings XI Punjab',
+        'Rising Pune Supergiants': 'Rising Pune Supergiant'
     }
 
     # Replace old team names with the latest names
@@ -19,9 +20,8 @@ def latest_teams(df, cols):
 
     return df
 
-# Function to standardize venue names
 
-
+# Updating the venue names
 def unique_stadium(matches_df):
     venue_map = {
         'Arun Jaitley Stadium, Delhi': 'Arun Jaitley Stadium',
@@ -50,21 +50,21 @@ def unique_stadium(matches_df):
 
 def trimSpaceInValues(df):
     for col in df.columns:
-        if df[col].dtype == 'object':  # Ensure the column is of string type
+        if df[col].dtype == 'object': 
             df[col] = df[col].str.strip()
     return df
 
 
-# Load and clean the matches data
+# Loading and cleaning the matches data
 matches_df = pd.read_csv('matches_2008-2024.csv')
 matches_df.columns = matches_df.columns.str.strip()
 
-# Load and clean the deliveries data
+# Loading and cleaning the deliveries data
 deliveries_df = pd.read_csv('deliveries_2008-2024.csv')
 deliveries_df.columns = deliveries_df.columns.str.strip()
 
 
-# Apply the function to your DataFrame
+
 matches_df = trimSpaceInValues(matches_df)
 deliveries_df = trimSpaceInValues(deliveries_df)
 

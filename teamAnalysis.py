@@ -222,6 +222,5 @@ def app():
         st.pyplot(fig, transparent=True)
 
         st.image("Images/divider.png")
-        st. markdown(f"<h6 style='text-align: center; color: white;'> “When people throw stones at you, you turn them into milestones.”– Sachin Tendulkar </h6>", unsafe_allow_html=True)
 
     create_scroll_to_top_button(key_suffix="teamAnalysis")

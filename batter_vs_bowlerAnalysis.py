@@ -122,8 +122,6 @@ def app():
                 st.table(summary_df.style)
 
                 st.write('---')
-                st.markdown(
-                    f"<h6 style='text-align: center;'> “That's the wall and these are the makers” </h6>", unsafe_allow_html=True)
 
             else:
                 # If no data is found for the selected pair

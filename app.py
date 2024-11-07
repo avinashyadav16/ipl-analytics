@@ -28,9 +28,9 @@ PAGES = {
     "HOME": homePage,
     "Exploratory Data Analysis": exploratoryDataAnalysis,
     "Team Analysis": teamAnalysis,
+    "Team v/s Team": team_vs_teamAnalysis,
     "Batter v/s Bowler": batter_vs_bowlerAnalysis,
     "Player Analysis": playerAnalysis,
-    "Team v/s Team": team_vs_teamAnalysis,
     "Predict Score": scorePrediction,
     "Predict Win Probability": winnerPrediction
 }
