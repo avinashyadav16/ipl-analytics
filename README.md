@@ -87,6 +87,14 @@ Feel free to contribute to this project by forking the repository and submitting
 
 ## Project Overview
 
-![](Images\IPL_ANALYSIS_OVERVIEW.png)
+### Home Page:
+
+![Home Page Sample Image](/Images/IPL_ANALYSIS_OVERVIEW.png)
+
+### Navigation Bar:
+
+![NavBar Sample Image](/Images/NavBar.png)
 
 <!-- <img title="repo views" src="https://repoviews.netlify.app/.netlify/functions/repoViews?file=app.py"> -->
+
+![Divider Line](/Images/divider.png)
