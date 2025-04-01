@@ -8,8 +8,8 @@ from datasetPreprocessing import new_deliveriesDF
 def app():
     st.markdown(
         '''
-        <h1 style='text-align:center; color: #c50d66;'><strong> 🏏 BATTER V/S BOWLER ANALYSIS ⚽ </strong></h1>
-        <hr style="border-top: 3px solid #c50d66;">
+            <h1 style='text-align:center; color: #c50d66;'><strong> 🏏 BATTER V/S BOWLER ANALYSIS ⚽ </strong></h1>
+            <hr style="border-top: 3px solid #c50d66;">
         ''',
         unsafe_allow_html=True
     )
@@ -87,28 +87,36 @@ def app():
 
                 # Calculating boundaries and extras
                 sixes = head_to_head[
-                    head_to_head['batsman_runs'] == 6].shape[0]
+                    head_to_head['batsman_runs'] == 6
+                ].shape[0]
 
                 fours = head_to_head[
-                    head_to_head['batsman_runs'] == 4].shape[0]
+                    head_to_head['batsman_runs'] == 4
+                ].shape[0]
 
                 dot_balls = head_to_head[
-                    head_to_head['batsman_runs'] == 0].shape[0]
+                    head_to_head['batsman_runs'] == 0
+                ].shape[0]
 
                 wide_balls = head_to_head[
-                    head_to_head['extras_type'].fillna('') == 'wides'].shape[0]
+                    head_to_head['extras_type'].fillna('') == 'wides'
+                ].shape[0]
 
                 legbyes = head_to_head[
-                    head_to_head['extras_type'].fillna('') == 'legbyes'].shape[0]
+                    head_to_head['extras_type'].fillna('') == 'legbyes'
+                ].shape[0]
 
                 byes = head_to_head[
-                    head_to_head['extras_type'].fillna('') == 'byes'].shape[0]
+                    head_to_head['extras_type'].fillna('') == 'byes'
+                ].shape[0]
 
                 noballs = head_to_head[
-                    head_to_head['extras_type'].fillna('') == 'noballs'].shape[0]
+                    head_to_head['extras_type'].fillna('') == 'noballs'
+                ].shape[0]
 
                 penalty = head_to_head[
-                    head_to_head['extras_type'].fillna('') == 'penalty'].shape[0]
+                    head_to_head['extras_type'].fillna('') == 'penalty'
+                ].shape[0]
 
                 summary_df = pd.DataFrame(
                     {'Statistic': [
@@ -123,7 +131,18 @@ def app():
                         'No Balls',
                         'Penalties'
                     ],
-                        f'{batsman} vs {bowler}': [total_bowls, total_runs, sixes, fours, dot_balls, wide_balls, legbyes, byes, noballs, penalty]
+                        f'{batsman} vs {bowler}': [
+                            total_bowls,
+                            total_runs,
+                            sixes,
+                            fours,
+                            dot_balls,
+                            wide_balls,
+                            legbyes,
+                            byes,
+                            noballs,
+                            penalty
+                    ]
                     }
                 )
 
@@ -133,10 +152,15 @@ def app():
                     values = summary_df[f'{batsman} vs {bowler}'].values
                     labels = summary_df['Statistic'].values
 
-                    fig, ax = plt.subplots(figsize=(8, 6), dpi=100)
+                    fig, ax = plt.subplots(
+                        figsize=(8, 6),
+                        dpi=100
+                    )
 
                     bars = ax.barh(
-                        labels, values, color=sns.color_palette("tab10")
+                        labels,
+                        values,
+                        color=sns.color_palette("tab10")
                     )
 
                     for bar in bars:
@@ -155,8 +179,14 @@ def app():
                         pad=20
                     )
 
-                    ax.set_xlabel('Values', fontsize=12)
-                    ax.set_ylabel('Metrics', fontsize=12)
+                    ax.set_xlabel(
+                        'Values',
+                        fontsize=12
+                    )
+                    ax.set_ylabel(
+                        'Metrics',
+                        fontsize=12
+                    )
 
                     ax.spines['top'].set_visible(False)
                     ax.spines['right'].set_visible(False)
@@ -182,7 +212,8 @@ def app():
                     f'OOPS! No Data Found for {batsman} vs {bowler} in IPL'
                 )
                 st.markdown(
-                    "<h4 style='text-align: center; color: red;'>No Records Found</h4>", unsafe_allow_html=True
+                    "<h4 style='text-align: center; color: red;'>No Records Found</h4>",
+                    unsafe_allow_html=True
                 )
 
         st.image("Images/divider.png")

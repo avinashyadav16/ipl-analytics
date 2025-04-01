@@ -50,7 +50,7 @@ def unique_stadium(matches_df):
 
 def trimSpaceInValues(df):
     for col in df.columns:
-        if df[col].dtype == 'object': 
+        if df[col].dtype == 'object':
             df[col] = df[col].str.strip()
     return df
 
@@ -64,21 +64,25 @@ deliveries_df = pd.read_csv('deliveries_2008-2024.csv')
 deliveries_df.columns = deliveries_df.columns.str.strip()
 
 
-
 matches_df = trimSpaceInValues(matches_df)
 deliveries_df = trimSpaceInValues(deliveries_df)
 
 # Replacing the empty values in the 'extra_types' with the 'None' When it is normal deliveries:
-deliveries_df.loc[deliveries_df['extras_type'].str.strip() ==
-                  '', 'extras_type'] = 'None'
+deliveries_df.loc[
+    deliveries_df['extras_type'].str.strip() == '', 'extras_type'
+] = 'None'
 
 # Apply the cleaning functions to the matches data
 new_matchesDF = latest_teams(
-    matches_df, ['team1', 'team2', 'toss_winner', 'winner'])
+    matches_df,
+    ['team1', 'team2', 'toss_winner', 'winner']
+)
 
 unique_stadium(new_matchesDF)
 
 
 # Apply the latest_teams function to deliveries data
 new_deliveriesDF = latest_teams(
-    deliveries_df, ['batting_team', 'bowling_team'])
+    deliveries_df,
+    ['batting_team', 'bowling_team']
+)
