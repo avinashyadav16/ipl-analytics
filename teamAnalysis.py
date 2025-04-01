@@ -59,8 +59,7 @@ def app():
             ))
 
         fig.update_layout(
-            title=f'Average Runs Scored By {
-                team.strip()} Against Different Teams',
+            title=f'Average Runs Scored By {team.strip()} Against Different Teams',
             xaxis_title="Bowling Teams",
             yaxis_title="Total Runs",
             plot_bgcolor='rgba(0,0,0,0)',
@@ -164,8 +163,10 @@ def app():
 
 ######################################################################################################################################
 
-        st. markdown(f"<h5 style='text-align: center; color: white;'> {
-                     team} Match Wins Based On Venue </h5>", unsafe_allow_html=True)
+        st. markdown(
+            f"<h5 style='text-align: center; color: white;'> {team} Match Wins Based On Venue </h5>",
+            unsafe_allow_html=True
+        )
 
         # Most Win Based On Venue,City
         venue_win = new_matchesDF[new_matchesDF['winner'] == team]['venue'].value_counts()[
@@ -181,8 +182,10 @@ def app():
 
         st.image("Images/divider.png")
 
-        st. markdown(f"<h5 style='text-align: center; color: white;'> {
-                     team} 200+ Runs </h5>", unsafe_allow_html=True)
+        st. markdown(
+            f"<h5 style='text-align: center; color: white;'> {team} 200+ Runs </h5>",
+            unsafe_allow_html=True
+        )
 
         # Top 10 Highest Runs
         fig = plt.figure(figsize=(12, 10))
@@ -200,8 +203,10 @@ def app():
         st.pyplot(fig, transparent=True)
 
         st.image("Images/divider.png")
-        st. markdown(f"<h5 style='text-align: center; color: white;'> {
-                     team} Top 10 Lowest Runs </h5>", unsafe_allow_html=True)
+        st.markdown(
+            f"<h5 style='text-align: center; color: white;'> {team} Top 10 Lowest Runs </h5>",
+            unsafe_allow_html=True
+        )
 
         # Top 10 Lowest Runs
         fig = plt.figure(figsize=(12, 10))
@@ -224,3 +229,4 @@ def app():
         st.image("Images/divider.png")
 
     create_scroll_to_top_button(key_suffix="teamAnalysis")
+    st.image("Images/divider.png")

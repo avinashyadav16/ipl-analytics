@@ -41,10 +41,12 @@ def gen_colors(t1, t2):
 
 
 def app():
-    st.markdown(''' 
-    <h1 style='text-align:center; color: #259073;'><strong> 🎯 TEAM V/S TEAM ANALYSIS 🎯</strong></h1>
-    <hr style="border-top: 3px solid #259073;">
-    ''', unsafe_allow_html=True)
+    st.markdown(
+        ''' <h1 style='text-align:center; color: #259073;'><strong> 🎯 TEAM V/S TEAM ANALYSIS 🎯</strong></h1>
+            <hr style="border-top: 3px solid #259073;">
+        ''',
+        unsafe_allow_html=True
+    )
 
     combine_df = new_matchesDF.merge(
         new_deliveriesDF,
@@ -63,7 +65,9 @@ def app():
 
     if t1 == t2:
         st.markdown(
-            f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like Team1 and Team2 Are Same ⚠</h5>", unsafe_allow_html=True)
+            f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like Team1 and Team2 Are Same ⚠</h5>",
+            unsafe_allow_html=True
+        )
     else:
         colors = gen_colors(t1, t2)
 
@@ -71,7 +75,9 @@ def app():
 
         if Analyze:
             st.markdown(
-                f"<h3 style='text-align: center;'> {t1} vs {t2} </h3>", unsafe_allow_html=True)
+                f"<h3 style='text-align: center;'> {t1} vs {t2} </h3>",
+                unsafe_allow_html=True
+            )
 
             # Total Match Played
             t1_batting = new_matchesDF[
@@ -86,8 +92,7 @@ def app():
 
             if total.empty:
                 st.markdown(
-                    f"<h5 style='text-align: center; color: red;'> ⚠ {t1} and {
-                        t2} have not played any matches together ⚠</h5>",
+                    f"<h5 style='text-align: center; color: red;'> ⚠ {t1} and {t2} have not played any matches together ⚠</h5>",
                     unsafe_allow_html=True
                 )
             else:
@@ -184,8 +189,7 @@ def app():
                 fig = px.line(data_frame=runs_avg,
                               x='season',
                               y='total_runs',
-                              title=f'{t1} vs {t2} : {
-                                  t1} Average Total Score',
+                              title=f'{t1} vs {t2} : {t1} Average Total Score',
                               labels={
                                   'total_runs': "Runs",
                                   'season': f"Bowling :{t2}"}
@@ -215,8 +219,7 @@ def app():
                 fig = px.line(data_frame=runs_avg,
                               x='season',
                               y='total_runs',
-                              title=f'{t1} vs {t2} : {
-                                  t2} Average Total Score',
+                              title=f'{t1} vs {t2} : {t2} Average Total Score',
                               labels={
                                   'total_runs': "Runs",
                                   'season': f"Bowling :{t1}"}
@@ -231,8 +234,10 @@ def app():
                 # ----------->   MATCHES WINS BASED ON CITY    <----------
                 ###########################################################
                 st.image("Images/divider.png")
-                st. markdown(f"<h4 style='text-align: center; color: white;'> {t1} vs {
-                    t2} : Match Win Based On City  </h4>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<h4 style='text-align: center; color: white;'> {t1} vs {t2} : Match Win Based On City  </h4>",
+                    unsafe_allow_html=True
+                )
 
                 fig = plt.figure(figsize=(10, 4))
 
@@ -251,8 +256,8 @@ def app():
                 frame = legend.get_frame()
                 frame.set_facecolor('black')
 
-                plt.title(f'{t1} vs {
-                    t2} : Match Win Based On City',
+                plt.title(
+                    f'{t1} vs {t2} : Match Win Based On City',
                     fontsize=10
                 )
 
@@ -316,8 +321,10 @@ def app():
                 # ------------------>   TEAM T1 SIXES    <-----------------
                 ###########################################################
                 st.image("Images/divider.png")
-                st. markdown(f"<h4 style='text-align: center; color: white;'>  Team {
-                    t1} Players Total Sixes Against {t2} </h4>", unsafe_allow_html=True)
+                st. markdown(
+                    f"<h4 style='text-align: center; color: white;'>  Team {t1} Players Total Sixes Against {t2} </h4>",
+                    unsafe_allow_html=True
+                )
 
                 fig = plt.figure(figsize=(12, 10),
                                  dpi=150
@@ -333,8 +340,9 @@ def app():
 
                 ax.bar_label(ax.containers[0])
 
-                plt.title(f"Number of Sixes Hitted By Players of Team {
-                    t1} vs {t2} ")
+                plt.title(
+                    f"Number of Sixes Hitted By Players of Team {t1} vs {t2}"
+                )
                 plt.ylabel('Players')
                 plt.xlabel('Number of Sixes')
 
@@ -346,8 +354,10 @@ def app():
                 # ------------------>   TEAM T1 FOURS    <-----------------
                 ###########################################################
                 st.image("Images/divider.png")
-                st. markdown(f"<h4 style='text-align: center; color: white;'>  Team {
-                    t1} Players Total Fours Against {t2} </h4>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<h4 style='text-align: center; color: white;'>  Team {t1} Players Total Fours Against {t2} </h4>",
+                    unsafe_allow_html=True
+                )
 
                 fig = plt.figure(figsize=(12, 10),
                                  dpi=150
@@ -363,8 +373,9 @@ def app():
 
                 ax.bar_label(ax.containers[0])
 
-                plt.title(f"Number of fours Hitted By Players of Team {
-                    t1} vs {t2} ")
+                plt.title(
+                    f"Number of fours Hitted By Players of Team {t1} vs {t2}"
+                )
                 plt.ylabel('Players')
                 plt.xlabel('Number of fours')
 
@@ -376,8 +387,10 @@ def app():
                 # ------------------>   TEAM T2 SIXES    <-----------------
                 ###########################################################
                 st.image("Images/divider.png")
-                st. markdown(f"<h4 style='text-align: center; color: white;'>  Team {
-                    t2} Players Total Sixes Against {t1} </h4>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<h4 style='text-align: center; color: white;'>  Team {t2} Players Total Sixes Against {t1} </h4>",
+                    unsafe_allow_html=True
+                )
 
                 fig = plt.figure(figsize=(12, 10),
                                  dpi=150
@@ -393,8 +406,9 @@ def app():
 
                 ax.bar_label(ax.containers[0])
 
-                plt.title(f"Number of Sixes Hitted By Players of Team {
-                    t2} vs {t1} ")
+                plt.title(
+                    f"Number of Sixes Hitted By Players of Team {t2} vs {t1}"
+                )
                 plt.ylabel('Players')
                 plt.xlabel('Number of Sixes')
 
@@ -406,8 +420,10 @@ def app():
                 # ------------------>   TEAM T2 FOURS    <-----------------
                 ###########################################################
                 st.image("Images/divider.png")
-                st. markdown(f"<h4 style='text-align: center; color: white;'>  Team {
-                    t2} Players Total Fours Against {t1} </h4>", unsafe_allow_html=True)
+                st. markdown(
+                    f"<h4 style='text-align: center; color: white;'>  Team {t2} Players Total Fours Against {t1} </h4>",
+                    unsafe_allow_html=True
+                )
 
                 fig = plt.figure(figsize=(12, 10),
                                  dpi=150
@@ -423,8 +439,9 @@ def app():
 
                 ax.bar_label(ax.containers[0])
 
-                plt.title(f"Number of fours Hitted By Players of Team {
-                    t2}  vs {t1} ")
+                plt.title(
+                    f"Number of fours Hitted By Players of Team {t2} vs {t1}",
+                )
                 plt.ylabel('Players')
                 plt.xlabel('Number of fours')
 
@@ -435,3 +452,4 @@ def app():
                 st.image("Images/divider.png")
 
     create_scroll_to_top_button(key_suffix="teamAnalysis")
+    st.image("Images/divider.png")

@@ -47,8 +47,8 @@ def app():
             ))
 
             fig.update_layout(
-                title=f"{
-                    player.strip()}'s Batting Performance Against Other Teams",
+                title=(
+                    f"{player.strip()}'s Batting Performance Against Other Teams"),
                 xaxis_title="Teams",
                 yaxis_title="Total Runs Scored",
                 plot_bgcolor='rgba(0,0,0,0)',
@@ -81,8 +81,8 @@ def app():
             ))
 
             fig.update_layout(
-                title=f"{
-                    player.strip()}'s Batting Performance Against Different Bowlers [Top 15]",
+                title=(
+                    f"{player.strip()}'s Batting Performance Against Different Bowlers [Top 15]"),
                 xaxis_title="Bowlers",
                 yaxis_title="Total Runs Scored",
                 plot_bgcolor='rgba(0,0,0,0)',
@@ -115,8 +115,8 @@ def app():
             ))
 
             fig.update_layout(
-                title=f"{
-                    player.strip()}'s Batting Runs With Partner At non-striker [Top 15]",
+                title=(
+                    f"{player.strip()}'s Batting Runs With Partner At non-striker [Top 15]"),
                 xaxis_title="Players",
                 yaxis_title="Total Runs Scored",
                 plot_bgcolor='rgba(0,0,0,0)',
@@ -167,8 +167,10 @@ def app():
             st.image("Images/divider.png")
 
         else:
-            st.markdown(f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Batting Stats For {
-                        player} In IPL History ⚠</h5>", unsafe_allow_html=True)
+            st.markdown(
+                f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Batting Stats For {player} In IPL History ⚠</h5>",
+                unsafe_allow_html=True
+            )
 
         ###########################################################
         # --------------->   PLAYER AS BOWLER      <--------------
@@ -196,8 +198,8 @@ def app():
             ))
 
             fig.update_layout(
-                title=f"Runs Scored By Different Players Against {
-                    player.strip()}'s (Top 15)",
+                title=(
+                    f"Runs Scored By Different Players Against {player.strip()}'s (Top 15)"),
                 xaxis_title="Players",
                 yaxis_title="Runs",
                 plot_bgcolor='rgba(0,0,0,0)',
@@ -242,8 +244,8 @@ def app():
                 ))
 
             fig.update_layout(
-                title=f'Total Runs Given By {
-                    player.strip()} in Different Overs',
+                title=(
+                    f'Total Runs Given By {player.strip()} in Different Overs'),
                 xaxis_title="Overs",
                 yaxis_title="Total Runs",
                 plot_bgcolor='rgba(0,0,0,0)',
@@ -339,8 +341,8 @@ def app():
             ))
 
             fig.update_layout(
-                title=f'Runs Scored By Different Teams Against {
-                    player.strip()}',
+                title=(
+                    f'Runs Scored By Different Teams Against {player.strip()}'),
                 xaxis_title='Teams',
                 yaxis_title='Runs',
                 plot_bgcolor='rgba(0,0,0,0)',
@@ -357,7 +359,10 @@ def app():
             st.image("Images/divider.png")
 
         else:
-            st.markdown(f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Bowling Stats For {
-                        player} In IPL History ⚠</h5>", unsafe_allow_html=True)
+            st.markdown(
+                f"<h5 style='text-align: center; color: red;'> ⚠ Oops! Looks Like We Couldn't Find Any Bowling Stats For {player} In IPL History ⚠</h5>",
+                unsafe_allow_html=True
+            )
 
     create_scroll_to_top_button(key_suffix="playerAnalysis")
+    st.image("Images/divider.png")
