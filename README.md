@@ -1,6 +1,27 @@
 # Indian Premier League (IPL) Analysis (2008-2024)
 
-![IPL Logo](https://upload.wikimedia.org/wikipedia/en/thumb/1/19/TATA_IPL_2024_Logo.png/175px-TATA_IPL_2024_Logo.png)
+<div align="center">
+	<a href="https://github.com/avinashyadav16/ipl-analytics"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/19/TATA_IPL_2024_Logo.png/175px-TATA_IPL_2024_Logo.png" alt="IPL Logo" width="100px"/></a>
+	<h1>Indian Premier League (IPL) Analysis</h1>
+	<h3>This repository contains a comprehensive analysis of the Indian Premier League (IPL) from 2008 to 2024.</h3>
+  <p>
+  <a name="Pyhton_Badge"><img src="https://img.shields.io/badge/Python-lightgray?style=for-the-badge&logo=python&logoColor=%233776AB"></a>
+  <a name="NumPy_Badge"><img src="https://img.shields.io/badge/NumPy-lightgray?style=for-the-badge&logo=numpy&logoColor=%23013243"></a>
+  <a name="Pandas_Badge"><img src="https://img.shields.io/badge/Pandas-lightgray?style=for-the-badge&logo=pandas&logoColor=%23150458"></a>
+  <a name="Matplotlib_Badge"><img src="https://img.shields.io/badge/Matplotlib-lightgray?style=for-the-badge&logo=matplotlib&logoColor=%23150458"></a>
+  <a name="Seaborn_Badge"><img src="https://img.shields.io/badge/Seaborn-lightgray?style=for-the-badge&logo=seaborn&logoColor=%23150458"></a>
+  <a name="Plotly_Badge"><img src="https://img.shields.io/badge/Plotly-lightgray?style=for-the-badge&logo=plotly&logoColor=%233F4F75"></a>
+  <a name="Streamlit_Badge"><img src="https://img.shields.io/badge/Streamlit-lightgray?style=for-the-badge&logo=streamlit&logoColor=%23FF4B4B"></a>
+  <a name="Jupyter_Badge"><img src="https://img.shields.io/badge/Jupyter-lightgray?style=for-the-badge&logo=jupyter&logoColor=%23F37626"></a>
+  </p>
+	<p>
+		<a name="stars"><img src="https://img.shields.io/github/stars/avinashyadav16/ipl-analytics?style=for-the-badge"></a>
+		<a name="forks"><img src="https://img.shields.io/github/forks/avinashyadav16/ipl-analytics?logoColor=green&style=for-the-badge"></a>
+		<a name="contributions"><img src="https://img.shields.io/github/contributors/avinashyadav16/ipl-analytics?logoColor=green&style=for-the-badge"></a>
+		<a name="license"><img src="https://img.shields.io/github/license/avinashyadav16/ipl-analytics?style=for-the-badge"></a>
+	</p>
+	<h4>Show Your Support By Giving a ⭐ to this Repo</h4>
+</div>
 
 ## Overview
 
