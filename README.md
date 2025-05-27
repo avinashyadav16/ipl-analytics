@@ -1,5 +1,3 @@
-# Indian Premier League (IPL) Analysis (2008-2024)
-
 <div align="center">
 	<a href="https://github.com/avinashyadav16/ipl-analytics"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/19/TATA_IPL_2024_Logo.png/175px-TATA_IPL_2024_Logo.png" alt="IPL Logo" width="100px"/></a>
 	<h1>Indian Premier League (IPL) Analysis</h1>
